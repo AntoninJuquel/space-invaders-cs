@@ -91,7 +91,12 @@ namespace SpaceInvaders
         #endregion
 
         #region Classic Methods
-        private void LoadLevel(string levelName)
+        /// <summary>
+        /// Load a level from the xml file
+        /// </summary>
+        /// <param name="levelName"></param>
+        /// <remarks>Leave levelName empty to load a random level</remarks>
+        private void LoadLevel(string levelName = null)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(@"..\..\Resources\LevelEditor.xml");
@@ -99,7 +104,7 @@ namespace SpaceInvaders
             XmlNode levels = doc["levels"];
             if (levels.HasChildNodes)
             {
-                XmlNode level = levels[levelName];
+                XmlNode level = levelName == null ? levels.ChildNodes[random.Next(levels.ChildNodes.Count)] : levels[levelName];
 
                 XmlNode stats = level["stats"];
                 baseWidth = Convert.ToInt32(stats["width"].InnerText);
