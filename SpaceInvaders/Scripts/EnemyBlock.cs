@@ -1,37 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
+using System.Xml;
 
 namespace SpaceInvaders
 {
     class EnemyBlock : GameObject
     {
         #region Fields
-        private HashSet<SpaceShip> enemmyShips;
+        private readonly HashSet<SpaceShip> enemmyShips;
+        private readonly Random random = new Random();
         private int baseWidth;
         private Vector2 direction;
         private double randomShootProbability, randomBonusProbability;
-        private Random random;
         public Size Size
         {
             get;
             private set;
         }
         public int Count => enemmyShips.Count;
+
+        private Bitmap[] images = new Bitmap[]
+        {
+            Properties.Resources.ship1,
+            Properties.Resources.ship2,
+            Properties.Resources.ship3,
+            Properties.Resources.ship4,
+            Properties.Resources.ship5,
+            Properties.Resources.ship6,
+            Properties.Resources.ship7,
+            Properties.Resources.ship8,
+            Properties.Resources.ship9
+        };
         #endregion
 
         #region Construtors
-        public EnemyBlock(int width, Vector2 position, double speed) : base(position, speed, Side.Enemy)
+        public EnemyBlock(Vector2 position) : base(position, 0, Side.Enemy)
         {
-            baseWidth = width;
             enemmyShips = new HashSet<SpaceShip>();
             direction = Vector2.Right;
-            randomShootProbability = .1;
-            randomBonusProbability = .1;
-            random = new Random();
-            AddLine(9, 1, Properties.Resources.ship5);
-            AddLine(3, 1, Properties.Resources.ship6);
-            AddLine(5, 1, Properties.Resources.ship7);
+
+            LoadLevel("easy");
         }
         #endregion
 
@@ -68,19 +78,49 @@ namespace SpaceInvaders
         public override void Update(Game gameInstance, double deltaT)
         {
             if (Position.x + direction.x < 0 || Position.x + Size.Width + direction.x > gameInstance.gameSize.Width)
-                UpdateDirection(gameInstance);
+                ChangeDirection(gameInstance);
 
             Move(direction, speedPixelPerSecond, deltaT);
             foreach (var enemy in enemmyShips)
             {
                 enemy.Move(direction, speedPixelPerSecond, deltaT);
                 if (random.NextDouble() <= randomShootProbability * deltaT)
-                    enemy.Shoot(gameInstance,Vector2.Down);
+                    enemy.Shoot(gameInstance, Vector2.Down);
             }
         }
         #endregion
 
         #region Classic Methods
+        private void LoadLevel(string levelName)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(@"..\..\Resources\LevelEditor.xml");
+
+            XmlNode levels = doc["levels"];
+            if (levels.HasChildNodes)
+            {
+                XmlNode level = levels[levelName];
+
+                XmlNode stats = level["stats"];
+                baseWidth = Convert.ToInt32(stats["width"].InnerText);
+                Size = new Size(baseWidth, 0);
+                speedPixelPerSecond = Convert.ToDouble(stats["speed"].InnerText);
+
+                XmlNode probabilities = level["probabilities"];
+                NumberFormatInfo provider = new NumberFormatInfo();
+                provider.NumberGroupSeparator = ".";
+                randomShootProbability = Convert.ToDouble(probabilities["shoot"].InnerText, provider);
+                randomBonusProbability = Convert.ToDouble(probabilities["bonus"].InnerText, provider);
+
+                foreach (XmlNode item in level["lines"])
+                {
+                    int id = Convert.ToInt32(item["id"].InnerText);
+                    int num = Convert.ToInt32(item["num"].InnerText);
+                    int lives = Convert.ToInt32(item["lives"].InnerText);
+                    AddLine(num, lives, images[id]);
+                }
+            }
+        }
         private void AddLine(int nbShips, int nbLives, Bitmap shipImage)
         {
             var y = Size.Height;
@@ -91,7 +131,7 @@ namespace SpaceInvaders
                 var enemy = new SpaceShip(speedPixelPerSecond, position, nbLives, shipImage, Side);
                 enemmyShips.Add(enemy);
             }
-            UpdateSize();
+            Size += new Size(0, shipImage.Height);
         }
 
         private void UpdateSize()
@@ -115,7 +155,7 @@ namespace SpaceInvaders
             Size = new Size(Math.Max(Size.Width, lineWidth), Size.Height);
         }
 
-        private void UpdateDirection(Game gameInstance)
+        private void ChangeDirection(Game gameInstance)
         {
             direction *= -1;
             Position += Vector2.Down * 10;

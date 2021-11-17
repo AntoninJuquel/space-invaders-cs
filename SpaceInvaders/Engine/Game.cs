@@ -218,7 +218,7 @@ namespace SpaceInvaders
             }
 
             position = new Vector2(0, 0);
-            enemies = new EnemyBlock(gameSize.Width / 2, position, 25);
+            enemies = new EnemyBlock(position);
             AddNewGameObject(enemies);
             
             theme.Stop();

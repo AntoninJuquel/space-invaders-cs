@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<levels>
+	<easy>
+		<lines>
+			<line>
+				<id>5</id>
+				<num>3</num>
+				<lives>1</lives>
+			</line>
+			<line>
+				<id>4</id>
+				<num>9</num>
+				<lives>1</lives>
+			</line>
+			<line>
+				<id>6</id>
+				<num>5</num>
+				<lives>1</lives>
+			</line>
+		</lines>
+		<probabilities>
+			<shoot>0.01</shoot>
+			<bonus>0.1</bonus>
+		</probabilities>
+		<stats>
+			<speed>50</speed>
+			<width>250</width>
+		</stats>
+	</easy>
+</levels>
