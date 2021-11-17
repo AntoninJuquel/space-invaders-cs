@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Engine\SimpleObject.cs" />
+    <Compile Include="Engine\Sound.cs" />
     <Compile Include="Engine\Vector2.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

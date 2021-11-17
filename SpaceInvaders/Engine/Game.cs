@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Media;
+using System.Windows.Media;
 
 namespace SpaceInvaders
 {
@@ -20,18 +20,12 @@ namespace SpaceInvaders
         /// <summary>
         /// A shared black brush
         /// </summary>
-        public static Brush blackBrush = new SolidBrush(Color.Black);
+        public static System.Drawing.Brush blackBrush = new SolidBrush(System.Drawing.Color.Black);
 
         /// <summary>
         /// A shared simple font
         /// </summary>
         public static Font defaultFont = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel);
-
-        public static Dictionary<string, SoundPlayer> SoundManager = new Dictionary<string, SoundPlayer>()
-        {
-            {"theme", new SoundPlayer(Properties.Resources.theme)},
-            {"shoot", new SoundPlayer(Properties.Resources.shoot)}
-        };
         #endregion
 
         #region GameObjects Management
@@ -76,9 +70,14 @@ namespace SpaceInvaders
         }
 
         /// <summary>
-        /// Curent state of the game
+        /// Current state of the game
         /// </summary>
         private GameState state;
+
+        /// <summary>
+        /// Theme sound of the game
+        /// </summary>
+        private MediaPlayer theme;
         #endregion
 
         #region Game Physical Elements
@@ -111,6 +110,7 @@ namespace SpaceInvaders
         private Game(Size gameSize)
         {
             this.gameSize = gameSize;
+            theme = Sound.theme;
             NewGame();
         }
         #endregion
@@ -196,7 +196,7 @@ namespace SpaceInvaders
         {
             keyPressed.Remove(key);
         }
-
+        
         /// <summary>
         /// Start a new game
         /// </summary>
@@ -220,8 +220,9 @@ namespace SpaceInvaders
             position = new Vector2(0, 0);
             enemies = new EnemyBlock(gameSize.Width / 2, position, 25);
             AddNewGameObject(enemies);
-
-            SoundManager["theme"].PlayLooping();
+            
+            theme.Stop();
+            theme.Play();
 
             state = GameState.Play;
         }

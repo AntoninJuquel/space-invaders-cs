@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Media;
 
 namespace SpaceInvaders
 {
@@ -7,6 +8,7 @@ namespace SpaceInvaders
     {
         #region Fields
         private Missile missile;
+        private MediaPlayer shoot;
         #endregion
 
         #region Constructors
@@ -19,7 +21,7 @@ namespace SpaceInvaders
         /// <param name="image">start image</param>
         public SpaceShip(double speed, Vector2 position, int lives, Bitmap image, Side side) : base(speed, position, lives, image, side)
         {
-
+            shoot = Sound.shoot;
         }
         #endregion
 
@@ -44,7 +46,8 @@ namespace SpaceInvaders
             var position = Position + new Vector2(Image.Width * .5f, 0);
             missile = new Missile(500, position, 1, direction, Side);
             gameInstance.AddNewGameObject(missile);
-            Game.SoundManager["shoot"].Play();
+            shoot.Stop();
+            shoot.Play();
         }
         #endregion
     }
