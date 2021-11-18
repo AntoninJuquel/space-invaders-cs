@@ -10,11 +10,12 @@ namespace SpaceInvaders
     internal class EnemyBlock : GameObject
     {
         #region Fields
+
         /// <summary>
         /// 
         /// </summary>
         private readonly HashSet<SpaceShip> _enemyShips;
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -43,11 +44,7 @@ namespace SpaceInvaders
         /// <summary>
         /// 
         /// </summary>
-        private Size Size
-        {
-            get;
-            set;
-        }
+        private Size Size { get; set; }
 
         /// <summary>
         /// 
@@ -64,9 +61,11 @@ namespace SpaceInvaders
             Properties.Resources.ship8,
             Properties.Resources.ship9
         };
+
         #endregion
 
         #region Construtors
+
         /// <summary>
         /// 
         /// </summary>
@@ -78,9 +77,11 @@ namespace SpaceInvaders
 
             LoadLevel("easy");
         }
+
         #endregion
 
         #region InHerited Methods
+
         /// <summary>
         /// Test the collision with the missile on each enemy and randomly spawn a bonus after a death
         /// </summary>
@@ -105,7 +106,6 @@ namespace SpaceInvaders
 
                 return dead;
             });
-
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace SpaceInvaders
         {
             foreach (var enemy in _enemyShips)
                 enemy.Draw(gameInstance, graphics);
-            graphics.DrawRectangle(new Pen(Color.Red), (float)Position.X, (float)Position.Y, Size.Width, Size.Height);
+            graphics.DrawRectangle(new Pen(Color.Red), (float) Position.X, (float) Position.Y, Size.Width, Size.Height);
         }
 
         /// <summary>
@@ -142,13 +142,16 @@ namespace SpaceInvaders
                 if (_random.NextDouble() <= _randomShootProbability * deltaT)
                     enemy.Shoot(gameInstance, Vector2.Down);
             }
-            Position.X = (int)_enemyShips.Min(ship => ship.Position.X);
-            Position.Y = (int)_enemyShips.Min(ship => ship.Position.Y);
+
+            Position.X = (int) _enemyShips.Min(ship => ship.Position.X);
+            Position.Y = (int) _enemyShips.Min(ship => ship.Position.Y);
             UpdateSize();
         }
+
         #endregion
 
         #region Classic Methods
+
         /// <summary>
         /// Load the stats and probabilities from the level data
         /// </summary>
@@ -196,7 +199,9 @@ namespace SpaceInvaders
 
             XmlNode levels = doc["levels"];
             if (levels == null || !levels.HasChildNodes) return;
-            var level = levelName == null ? levels.ChildNodes[_random.Next(levels.ChildNodes.Count)] : levels[levelName];
+            var level = levelName == null
+                ? levels.ChildNodes[_random.Next(levels.ChildNodes.Count)]
+                : levels[levelName];
 
             LoadLevelData(level);
             SpawnLines(level);
@@ -218,6 +223,7 @@ namespace SpaceInvaders
                 var enemy = new SpaceShip(SpeedPixelPerSecond, position, nbLives, shipImage, Side);
                 _enemyShips.Add(enemy);
             }
+
             Size += new Size(0, shipImage.Height);
         }
 
@@ -226,10 +232,10 @@ namespace SpaceInvaders
         /// </summary>
         private void UpdateSize()
         {
-            var maxX = (int)_enemyShips.Max(ship => ship.Position.X + ship.Image.Width);
-            var maxY = (int)_enemyShips.Max(ship => ship.Position.Y + ship.Image.Height);
+            var maxX = (int) _enemyShips.Max(ship => ship.Position.X + ship.Image.Width);
+            var maxY = (int) _enemyShips.Max(ship => ship.Position.Y + ship.Image.Height);
 
-            Size = new Size(maxX - (int)Position.X, maxY - (int)Position.Y);
+            Size = new Size(maxX - (int) Position.X, maxY - (int) Position.Y);
         }
 
         /// <summary>
@@ -248,6 +254,7 @@ namespace SpaceInvaders
             if (Position.Y >= gameInstance.PlayerShip.Position.Y)
                 gameInstance.PlayerShip.Lives = 0;
         }
+
         #endregion
     }
 }

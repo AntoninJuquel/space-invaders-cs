@@ -7,24 +7,19 @@ namespace SpaceInvaders
     /// </summary>
     public enum Side
     {
-        Ally, Enemy, Neutral
+        Ally,
+        Enemy,
+        Neutral
     }
 
     internal abstract class GameObject
     {
-        protected Side Side
-        {
-            get;
-            private set;
-        }
+        protected Side Side { get; private set; }
+
         /// <summary>
         /// Object position
         /// </summary>
-        public Vector2 Position
-        {
-            get;
-            set;
-        }
+        public Vector2 Position { get; set; }
 
         /// <summary>
         /// Object movement speed
@@ -61,10 +56,12 @@ namespace SpaceInvaders
         public abstract void Collision(SimpleObject simpleObject);
 
         #region Protected Methods
+
         public void Move(Vector2 direction, double speed, double deltaT)
         {
             Position += direction * (speed * deltaT);
         }
+
         #endregion
     }
 }

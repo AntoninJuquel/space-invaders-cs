@@ -6,6 +6,7 @@ namespace SpaceInvaders
     internal class PlayerSpaceShip : SpaceShip
     {
         #region Constructors
+
         /// <summary>
         /// 
         /// </summary>
@@ -16,9 +17,11 @@ namespace SpaceInvaders
             SpaceInvaders.Properties.Resources.ship3, Side.Ally)
         {
         }
+
         #endregion
 
         #region Inherited Methods
+
         /// <summary>
         /// 
         /// </summary>
@@ -29,7 +32,7 @@ namespace SpaceInvaders
             HandleMovements(gameInstance, deltaT);
             HandleShoot(gameInstance);
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -43,6 +46,7 @@ namespace SpaceInvaders
             var size = graphics.MeasureString(text, Game.DefaultFont);
             graphics.DrawString(text, Game.DefaultFont, Game.BlackBrush, gameInstance.GameSize.Width - size.Width, 0);
         }
+
         #endregion
 
         #region Methods
@@ -57,7 +61,7 @@ namespace SpaceInvaders
             if (gameInstance.KeyPressed.Contains(Keys.Right) && Position.X + Image.Width < gameInstance.GameSize.Width)
                 Move(Vector2.Right, SpeedPixelPerSecond, deltaT);
         }
-        
+
         /// <summary>
         /// 
         /// </summary>

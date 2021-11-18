@@ -5,6 +5,7 @@ namespace SpaceInvaders
     internal class Vector2
     {
         public double X, Y;
+
         public Vector2(double x = 0, double y = 0)
         {
             X = x;

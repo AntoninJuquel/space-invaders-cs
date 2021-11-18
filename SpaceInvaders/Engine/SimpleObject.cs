@@ -5,21 +5,17 @@ namespace SpaceInvaders
     internal abstract class SimpleObject : GameObject
     {
         #region Fields
+
         /// <summary>
         /// Lives number of a simple object
         /// </summary>
-        public int Lives
-        {
-            get;
-            set;
-        }
+        public int Lives { get; set; }
+
         /// <summary>
         /// Object image
         /// </summary>
-        public Bitmap Image
-        {
-            get;
-        }
+        public Bitmap Image { get; }
+
         #endregion
 
         #region Constructors
@@ -32,14 +28,17 @@ namespace SpaceInvaders
         /// <param name="lives"></param>
         /// <param name="image"></param>
         /// <param name="side"></param>
-        protected SimpleObject(double speed, Vector2 position, int lives, Bitmap image, Side side) : base(position, speed, side)
+        protected SimpleObject(double speed, Vector2 position, int lives, Bitmap image, Side side) : base(position,
+            speed, side)
         {
             Lives = lives;
             Image = image;
         }
+
         #endregion
 
         #region Inherited Methods
+
         /// <summary>
         /// 
         /// </summary>
@@ -47,7 +46,7 @@ namespace SpaceInvaders
         /// <param name="graphics"></param>
         public override void Draw(Game gameInstance, Graphics graphics)
         {
-            graphics.DrawImage(Image, (float)Position.X, (float)Position.Y, Image.Width, Image.Height);
+            graphics.DrawImage(Image, (float) Position.X, (float) Position.Y, Image.Width, Image.Height);
         }
 
         /// <summary>
@@ -84,6 +83,7 @@ namespace SpaceInvaders
         /// </summary>
         /// <param name="simpleObject"></param>
         protected abstract void OnCollision(SimpleObject simpleObject);
+
         #endregion
     }
 }

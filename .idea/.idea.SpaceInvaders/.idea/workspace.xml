@@ -4,19 +4,7 @@
     <projectFile>SpaceInvaders/SpaceInvaders.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e6eb9755-b803-445d-9f0f-27afcded07f4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Engine/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Engine/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Engine/GameObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Engine/GameObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Engine/SimpleObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Engine/SimpleObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Engine/Sound.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Engine/Sound.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Engine/Vector2.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Engine/Vector2.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Scripts/Bonus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Scripts/Bonus.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Scripts/Bunker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Scripts/Bunker.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Scripts/EnemyBlock.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Scripts/EnemyBlock.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Scripts/Missile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Scripts/Missile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Scripts/PlayerSpaceShip.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Scripts/PlayerSpaceShip.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Scripts/SpaceShip.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Scripts/SpaceShip.cs" afterDir="false" />
-    </list>
+    <list default="true" id="e6eb9755-b803-445d-9f0f-27afcded07f4" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,7 +25,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C#" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
@@ -68,7 +56,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1637274107132</updated>
-      <workItem from="1637274111166" duration="2068000" />
+      <workItem from="1637274111166" duration="2205000" />
     </task>
     <servers />
   </component>

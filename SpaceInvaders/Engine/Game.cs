@@ -12,6 +12,7 @@ namespace SpaceInvaders
     internal class Game
     {
         #region Static Fields
+
         /// <summary>
         /// Singleton for easy access
         /// </summary>
@@ -26,9 +27,11 @@ namespace SpaceInvaders
         /// A shared simple font
         /// </summary>
         public static readonly Font DefaultFont = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel);
+
         #endregion
 
         #region GameObjects Management
+
         /// <summary>
         /// Set of all game objects currently in the game
         /// </summary>
@@ -48,9 +51,11 @@ namespace SpaceInvaders
         {
             _pendingNewGameObjects.Add(gameObject);
         }
+
         #endregion
 
         #region Game Technical Elements
+
         /// <summary>
         /// Size of the game area
         /// </summary>
@@ -66,7 +71,10 @@ namespace SpaceInvaders
         /// </summary>
         private enum GameState
         {
-            Play, Pause, Win, Lost
+            Play,
+            Pause,
+            Win,
+            Lost
         }
 
         /// <summary>
@@ -78,9 +86,11 @@ namespace SpaceInvaders
         /// Theme sound of the game
         /// </summary>
         private MediaPlayer _themePlayer;
+
         #endregion
 
         #region Game Physical Elements
+
         /// <summary>
         /// Player spaceship
         /// </summary>
@@ -90,9 +100,11 @@ namespace SpaceInvaders
         /// Block of enemies moving on the screen
         /// </summary>
         private EnemyBlock _enemyBlock;
+
         #endregion
 
         #region Constructors
+
         /// <summary>
         /// Singleton constructor
         /// </summary>
@@ -113,9 +125,11 @@ namespace SpaceInvaders
             this.GameSize = gameSize;
             NewGame();
         }
+
         #endregion
 
         #region Live Game Methods
+
         /// <summary>
         /// Draw the whole game
         /// </summary>
@@ -147,9 +161,11 @@ namespace SpaceInvaders
             // remove dead objects
             GameObjects.RemoveWhere(gameObject => !gameObject.IsAlive());
         }
+
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Force a given key to be ignored in following updates until the user
         /// explicitly retype it or the system auto fires it again.
@@ -256,17 +272,20 @@ namespace SpaceInvaders
                 case GameState.Pause:
                     HandlePlayPause(GameState.Play);
                     break;
-                case GameState.Win: case GameState.Lost:
+                case GameState.Win:
+                case GameState.Lost:
                     if (KeyPressed.Contains(Keys.Space))
                     {
                         ReleaseKey(Keys.Space);
                         NewGame();
                     }
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
+
         #endregion
     }
 }
