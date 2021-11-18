@@ -1,51 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
+﻿using System.Linq;
 
 namespace SpaceInvaders
 {
-    class Missile : SimpleObject
+    internal class Missile : SimpleObject
     {
         #region Fields
+
         /// <summary>
-        /// Direction que va suivre le missile
+        /// Direction the missile move along
         /// </summary>
-        private Vector2 moveDirection;
+        private readonly Vector2 _moveDirection;
+
         #endregion
 
         #region Constructors
+
         /// <summary>
         /// Simple constructor
         /// </summary>
-        /// <param name="speed">start speed</param>
-        /// <param name="position">start position</param>
-        /// <param name="lives">start lives</param>
-        /// <param name="image">start image</param>
-        public Missile(double speed, Vector2 position, int lives, Vector2 direction, Side side) : base(speed, position, lives, Properties.Resources.shoot1, side)
+        /// <param name="speed">Speed of the missile</param>
+        /// <param name="position">Start position of the missile</param>
+        /// <param name="lives">Lives of the missiles</param>
+        /// <param name="direction">Direction of the missile</param>
+        /// <param name="side">Side of the missile</param>
+        public Missile(double speed, Vector2 position, int lives, Vector2 direction, Side side) : base(speed, position,
+            lives, Properties.Resources.shoot1, side)
         {
-            moveDirection = direction;
+            _moveDirection = direction;
         }
+
         #endregion
 
         #region Inherited Methods
+
         public override void Update(Game gameInstance, double deltaT)
         {
-            Move(moveDirection, speedPixelPerSecond, deltaT);
-            if (Position.y < 0 || gameInstance.GameSize.Height < Position.y) Lives = 0;
+            Move(_moveDirection, SpeedPixelPerSecond, deltaT);
+            if (Position.Y < 0 || gameInstance.GameSize.Height < Position.Y) Lives = 0;
 
-            foreach (var gameObject in gameInstance.GameObjects)
-            {
-                if (gameObject == this) continue;
+            foreach (var gameObject in gameInstance.GameObjects.Where(gameObject => gameObject != this))
                 gameObject.Collision(this);
-            }
         }
 
         protected override void OnCollision(SimpleObject m)
         {
             m.Lives = Lives = 0;
         }
+
         #endregion
     }
 }

@@ -1,27 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using System.Drawing;
 
 namespace SpaceInvaders
 {
     /// <summary>
-    /// This is the generic abstact base class for any entity in the game
+    /// This is the generic abstract base class for any entity in the game
     /// </summary>
     public enum Side
     {
         Ally, Enemy, Neutral
     }
-    abstract class GameObject
+
+    internal abstract class GameObject
     {
-        public Side Side
+        protected Side Side
         {
             get;
             private set;
         }
         /// <summary>
-        /// Position de l'objet
+        /// Object position
         /// </summary>
         public Vector2 Position
         {
@@ -30,14 +27,14 @@ namespace SpaceInvaders
         }
 
         /// <summary>
-        /// Vitesse de deplacement de l'objet
+        /// Object movement speed
         /// </summary>
-        protected double speedPixelPerSecond;
+        protected double SpeedPixelPerSecond;
 
-        public GameObject(Vector2 position, double speed, Side side)
+        protected GameObject(Vector2 position, double speed, Side side)
         {
             Position = position;
-            speedPixelPerSecond = speed;
+            SpeedPixelPerSecond = speed;
             Side = side;
         }
 
@@ -45,7 +42,7 @@ namespace SpaceInvaders
         /// Update the state of a game objet
         /// </summary>
         /// <param name="gameInstance">instance of the current game</param>
-        /// <param name="deltaT">time ellapsed in seconds since last call to Update</param>
+        /// <param name="deltaT">time elapsed in seconds since last call to Update</param>
         public abstract void Update(Game gameInstance, double deltaT);
 
         /// <summary>
@@ -64,9 +61,9 @@ namespace SpaceInvaders
         public abstract void Collision(SimpleObject simpleObject);
 
         #region Protected Methods
-        public void Move(Vector2 direction, double speed, double delatT)
+        public void Move(Vector2 direction, double speed, double deltaT)
         {
-            Position += direction * (speed * delatT);
+            Position += direction * (speed * deltaT);
         }
         #endregion
     }

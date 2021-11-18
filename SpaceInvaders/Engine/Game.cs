@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Media;
@@ -19,12 +20,12 @@ namespace SpaceInvaders
         /// <summary>
         /// A shared black brush
         /// </summary>
-        public static System.Drawing.Brush BlackBrush = new SolidBrush(System.Drawing.Color.Black);
+        public static readonly System.Drawing.Brush BlackBrush = new SolidBrush(System.Drawing.Color.Black);
 
         /// <summary>
         /// A shared simple font
         /// </summary>
-        public static Font DefaultFont = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel);
+        public static readonly Font DefaultFont = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel);
         #endregion
 
         #region GameObjects Management
@@ -58,7 +59,7 @@ namespace SpaceInvaders
         /// <summary>
         /// State of the keyboard
         /// </summary>
-        public HashSet<Keys> KeyPressed = new HashSet<Keys>();
+        public readonly HashSet<Keys> KeyPressed = new HashSet<Keys>();
 
         /// <summary>
         /// GameState enum
@@ -76,7 +77,7 @@ namespace SpaceInvaders
         /// <summary>
         /// Theme sound of the game
         /// </summary>
-        private MediaPlayer _theme;
+        private MediaPlayer _themePlayer;
         #endregion
 
         #region Game Physical Elements
@@ -88,7 +89,7 @@ namespace SpaceInvaders
         /// <summary>
         /// Block of enemies moving on the screen
         /// </summary>
-        private EnemyBlock _enemieBlock;
+        private EnemyBlock _enemyBlock;
         #endregion
 
         #region Constructors
@@ -100,9 +101,7 @@ namespace SpaceInvaders
         /// <returns>instance of the game</returns>
         public static Game CreateGame(Size gameSize)
         {
-            if (GameInstance == null)
-                GameInstance = new Game(gameSize);
-            return GameInstance;
+            return GameInstance ?? (GameInstance = new Game(gameSize));
         }
 
         /// <summary>
@@ -125,7 +124,7 @@ namespace SpaceInvaders
         {
             if (_state == GameState.Pause)
                 g.DrawString("PAUSED", DefaultFont, BlackBrush, 0, 0);
-            foreach (GameObject gameObject in GameObjects)
+            foreach (var gameObject in GameObjects)
                 gameObject.Draw(this, g);
         }
 
@@ -142,10 +141,8 @@ namespace SpaceInvaders
             _pendingNewGameObjects.Clear();
 
             // update each game object
-            foreach (GameObject gameObject in GameObjects)
-            {
+            foreach (var gameObject in GameObjects)
                 gameObject.Update(this, deltaT);
-            }
 
             // remove dead objects
             GameObjects.RemoveWhere(gameObject => !gameObject.IsAlive());
@@ -155,7 +152,7 @@ namespace SpaceInvaders
         #region Methods
         /// <summary>
         /// Force a given key to be ignored in following updates until the user
-        /// explicitily retype it or the system autofires it again.
+        /// explicitly retype it or the system auto fires it again.
         /// </summary>
         /// <param name="key">key to ignore</param>
         public void ReleaseKey(Keys key)
@@ -180,7 +177,7 @@ namespace SpaceInvaders
         {
             var split = GameSize.Width / 3;
             var bunkerWidth = Properties.Resources.bunker.Width;
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 var position = new Vector2(split * (i + .5f) - bunkerWidth * .5f, GameSize.Height * .75);
                 GameObject bunker = new Bunker(position);
@@ -193,9 +190,8 @@ namespace SpaceInvaders
         /// </summary>
         private void SpawnEnemyBlock()
         {
-            var position = new Vector2(0, 0);
-            _enemieBlock = new EnemyBlock(position);
-            AddNewGameObject(_enemieBlock);
+            _enemyBlock = new EnemyBlock(new Vector2());
+            AddNewGameObject(_enemyBlock);
         }
 
         /// <summary>
@@ -210,10 +206,10 @@ namespace SpaceInvaders
             SpawnBunkers();
             SpawnEnemyBlock();
 
-            if (_theme != null)
-                _theme.Stop();
-            _theme = Sound.theme;
-            _theme.Play();
+            if (_themePlayer != null)
+                _themePlayer.Stop();
+            _themePlayer = Sound.Theme;
+            _themePlayer.Play();
 
             _state = GameState.Play;
         }
@@ -224,15 +220,13 @@ namespace SpaceInvaders
         /// /// <param name="nextState">next game state when P will be pressed</param>
         private void HandlePlayPause(GameState nextState)
         {
-            if (KeyPressed.Contains(Keys.P))
-            {
-                ReleaseKey(Keys.P);
-                _state = nextState;
-                if (nextState == GameState.Pause)
-                    _theme.Pause();
-                else
-                    _theme.Play();
-            }
+            if (!KeyPressed.Contains(Keys.P)) return;
+            ReleaseKey(Keys.P);
+            _state = nextState;
+            if (nextState == GameState.Pause)
+                _themePlayer.Pause();
+            else
+                _themePlayer.Play();
         }
 
         /// <summary>
@@ -240,7 +234,7 @@ namespace SpaceInvaders
         /// </summary>
         private void HandleWinLoss()
         {
-            if (_enemieBlock.Count == 0)
+            if (!_enemyBlock.IsAlive())
                 _state = GameState.Win;
             else if (!PlayerShip.IsAlive())
                 _state = GameState.Lost;
@@ -269,6 +263,8 @@ namespace SpaceInvaders
                         NewGame();
                     }
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
         #endregion

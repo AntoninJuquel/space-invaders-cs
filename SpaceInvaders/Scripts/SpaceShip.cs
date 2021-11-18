@@ -4,14 +4,15 @@ using System.Windows.Media;
 
 namespace SpaceInvaders
 {
-    class SpaceShip : SimpleObject
+    internal class SpaceShip : SimpleObject
     {
         #region Fields
-        private Missile missile;
-        private MediaPlayer shoot;
+        private Missile _missile;
+        private readonly MediaPlayer _shootPlayer;
         #endregion
 
         #region Constructors
+
         /// <summary>
         /// Simple constructor
         /// </summary>
@@ -19,9 +20,10 @@ namespace SpaceInvaders
         /// <param name="position">start position</param>
         /// <param name="lives">start lives</param>
         /// <param name="image">start image</param>
+        /// <param name="side"></param>
         public SpaceShip(double speed, Vector2 position, int lives, Bitmap image, Side side) : base(speed, position, lives, image, side)
         {
-            shoot = Sound.shoot;
+            _shootPlayer = Sound.Shoot;
         }
         #endregion
 
@@ -42,12 +44,12 @@ namespace SpaceInvaders
         #region Methods
         public void Shoot(Game gameInstance,Vector2 direction)
         {
-            if (missile != null && missile.IsAlive()) return;
-            var position = Position + new Vector2(Image.Width * .5f, 0);
-            missile = new Missile(500, position, 1, direction, Side);
-            gameInstance.AddNewGameObject(missile);
-            shoot.Stop();
-            shoot.Play();
+            if (_missile != null && _missile.IsAlive()) return;
+            var position = Position + new Vector2(Image.Width * .5f);
+            _missile = new Missile(500, position, 1, direction, Side);
+            gameInstance.AddNewGameObject(_missile);
+            _shootPlayer.Stop();
+            _shootPlayer.Play();
         }
         #endregion
     }

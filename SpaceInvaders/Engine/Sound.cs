@@ -2,9 +2,9 @@
 
 namespace SpaceInvaders
 {
-    class Sound
+    internal static class Sound
     {
-        internal static MediaPlayer theme
+        internal static MediaPlayer Theme
         {
             get
             {
@@ -14,7 +14,7 @@ namespace SpaceInvaders
             }
         }
 
-        internal static MediaPlayer shoot
+        internal static MediaPlayer Shoot
         {
             get
             {

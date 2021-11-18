@@ -2,7 +2,7 @@
 
 namespace SpaceInvaders
 {
-    class Bunker : SimpleObject
+    internal class Bunker : SimpleObject
     {
 
         #region Constructors
@@ -27,13 +27,13 @@ namespace SpaceInvaders
         #region Classic Methods
         private int IntersectsPixel(Vector2 missilePosition, Bitmap missileImage)
         {
-            int startX = (int)(missilePosition.x - Position.x);
+            var startX = (int)(missilePosition.X - Position.X);
             var imageDimension = missileImage.Width * missileImage.Height;
             var toDestroy = imageDimension;
-            for (int x = startX; x < startX + 2; x++)
+            for (var x = startX; x < startX + 2; x++)
             {
                 if (x > Image.Width-1 || x < 0) continue;
-                for (int y = Image.Height - 1; y >= 0; y--)
+                for (var y = Image.Height - 1; y >= 0; y--)
                 {
                     var pixel = Image.GetPixel(x, y);
                     if (pixel.A == 0) continue;
