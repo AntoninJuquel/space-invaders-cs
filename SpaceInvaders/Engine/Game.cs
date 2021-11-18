@@ -8,36 +8,35 @@ namespace SpaceInvaders
     /// <summary>
     /// This class represents the entire game, it implements the singleton pattern
     /// </summary>
-    class Game
+    internal class Game
     {
-        #region Static Fields (helpers)
-
+        #region Static Fields
         /// <summary>
         /// Singleton for easy access
         /// </summary>
-        public static Game game { get; private set; }
+        public static Game GameInstance { get; private set; }
 
         /// <summary>
         /// A shared black brush
         /// </summary>
-        public static System.Drawing.Brush blackBrush = new SolidBrush(System.Drawing.Color.Black);
+        public static System.Drawing.Brush BlackBrush = new SolidBrush(System.Drawing.Color.Black);
 
         /// <summary>
         /// A shared simple font
         /// </summary>
-        public static Font defaultFont = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel);
+        public static Font DefaultFont = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel);
         #endregion
 
         #region GameObjects Management
         /// <summary>
         /// Set of all game objects currently in the game
         /// </summary>
-        public HashSet<GameObject> gameObjects = new HashSet<GameObject>();
+        public HashSet<GameObject> GameObjects { get; private set; }
 
         /// <summary>
         /// Set of new game objects scheduled for addition to the game
         /// </summary>
-        private HashSet<GameObject> pendingNewGameObjects = new HashSet<GameObject>();
+        private HashSet<GameObject> _pendingNewGameObjects;
 
         /// <summary>
         /// Schedule a new object for addition in the game.
@@ -46,7 +45,7 @@ namespace SpaceInvaders
         /// <param name="gameObject">object to add</param>
         public void AddNewGameObject(GameObject gameObject)
         {
-            pendingNewGameObjects.Add(gameObject);
+            _pendingNewGameObjects.Add(gameObject);
         }
         #endregion
 
@@ -54,12 +53,12 @@ namespace SpaceInvaders
         /// <summary>
         /// Size of the game area
         /// </summary>
-        public Size gameSize;
+        public Size GameSize;
 
         /// <summary>
         /// State of the keyboard
         /// </summary>
-        public HashSet<Keys> keyPressed = new HashSet<Keys>();
+        public HashSet<Keys> KeyPressed = new HashSet<Keys>();
 
         /// <summary>
         /// GameState enum
@@ -72,12 +71,12 @@ namespace SpaceInvaders
         /// <summary>
         /// Current state of the game
         /// </summary>
-        private GameState state;
+        private GameState _state;
 
         /// <summary>
         /// Theme sound of the game
         /// </summary>
-        private MediaPlayer theme;
+        private MediaPlayer _theme;
         #endregion
 
         #region Game Physical Elements
@@ -86,7 +85,10 @@ namespace SpaceInvaders
         /// </summary>
         public PlayerSpaceShip PlayerShip { get; private set; }
 
-        private EnemyBlock enemies;
+        /// <summary>
+        /// Block of enemies moving on the screen
+        /// </summary>
+        private EnemyBlock _enemieBlock;
         #endregion
 
         #region Constructors
@@ -95,12 +97,12 @@ namespace SpaceInvaders
         /// </summary>
         /// <param name="gameSize">Size of the game area</param>
         /// 
-        /// <returns></returns>
+        /// <returns>instance of the game</returns>
         public static Game CreateGame(Size gameSize)
         {
-            if (game == null)
-                game = new Game(gameSize);
-            return game;
+            if (GameInstance == null)
+                GameInstance = new Game(gameSize);
+            return GameInstance;
         }
 
         /// <summary>
@@ -109,8 +111,7 @@ namespace SpaceInvaders
         /// <param name="gameSize">Size of the game area</param>
         private Game(Size gameSize)
         {
-            this.gameSize = gameSize;
-            theme = Sound.theme;
+            this.GameSize = gameSize;
             NewGame();
         }
         #endregion
@@ -122,67 +123,32 @@ namespace SpaceInvaders
         /// <param name="g">Graphics to draw in</param>
         public void Draw(Graphics g)
         {
-            if (state == GameState.Pause)
-                g.DrawString("PAUSED", defaultFont, blackBrush, 0, 0);
-            foreach (GameObject gameObject in gameObjects)
+            if (_state == GameState.Pause)
+                g.DrawString("PAUSED", DefaultFont, BlackBrush, 0, 0);
+            foreach (GameObject gameObject in GameObjects)
                 gameObject.Draw(this, g);
         }
 
         /// <summary>
         /// Update game
         /// </summary>
-        /// /// <param name="deltaT">Elapsed time since last frame</param>
+        /// <param name="deltaT">Elapsed time since last frame</param>
         public void Update(double deltaT)
         {
-            switch (state)
-            {
-                case GameState.Play:
-                    if (keyPressed.Contains(Keys.P))
-                    {
-                        ReleaseKey(Keys.P);
-                        state = GameState.Pause;
-                    }
-                    if (enemies.Count == 0)
-                        state = GameState.Win;
-                    if (!PlayerShip.IsAlive())
-                        state = GameState.Lost;
-
-                    break;
-                case GameState.Pause:
-                    if (keyPressed.Contains(Keys.P))
-                    {
-                        ReleaseKey(Keys.P);
-                        state = GameState.Play;
-                    }
-                    return;
-                case GameState.Win:
-                    if (keyPressed.Contains(Keys.Space))
-                    {
-                        ReleaseKey(Keys.Space);
-                        NewGame();
-                    }
-                    return;
-                case GameState.Lost:
-                    if (keyPressed.Contains(Keys.Space))
-                    {
-                        ReleaseKey(Keys.Space);
-                        NewGame();
-                    }
-                    return;
-            }
-
+            HandleGameState(out var update);
+            if (!update) return;
             // add new game objects
-            gameObjects.UnionWith(pendingNewGameObjects);
-            pendingNewGameObjects.Clear();
+            GameObjects.UnionWith(_pendingNewGameObjects);
+            _pendingNewGameObjects.Clear();
 
             // update each game object
-            foreach (GameObject gameObject in gameObjects)
+            foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.Update(this, deltaT);
             }
 
             // remove dead objects
-            gameObjects.RemoveWhere(gameObject => !gameObject.IsAlive());
+            GameObjects.RemoveWhere(gameObject => !gameObject.IsAlive());
         }
         #endregion
 
@@ -194,39 +160,117 @@ namespace SpaceInvaders
         /// <param name="key">key to ignore</param>
         public void ReleaseKey(Keys key)
         {
-            keyPressed.Remove(key);
+            KeyPressed.Remove(key);
         }
-        
+
+        /// <summary>
+        /// Spawn the player spaceship at the middle of the screen
+        /// </summary>
+        private void SpawnPlayer()
+        {
+            var position = new Vector2(GameSize.Width * .5f, GameSize.Height * .9f);
+            PlayerShip = new PlayerSpaceShip(100, position, 3);
+            AddNewGameObject(PlayerShip);
+        }
+
+        /// <summary>
+        /// Spawn 3 bunkers
+        /// </summary>
+        private void SpawnBunkers()
+        {
+            var split = GameSize.Width / 3;
+            var bunkerWidth = Properties.Resources.bunker.Width;
+            for (int i = 0; i < 3; i++)
+            {
+                var position = new Vector2(split * (i + .5f) - bunkerWidth * .5f, GameSize.Height * .75);
+                GameObject bunker = new Bunker(position);
+                AddNewGameObject(bunker);
+            }
+        }
+
+        /// <summary>
+        /// Spawn the enemy block on the top left corner
+        /// </summary>
+        private void SpawnEnemyBlock()
+        {
+            var position = new Vector2(0, 0);
+            _enemieBlock = new EnemyBlock(position);
+            AddNewGameObject(_enemieBlock);
+        }
+
         /// <summary>
         /// Start a new game
         /// </summary>
         private void NewGame()
         {
-            gameObjects = new HashSet<GameObject>();
+            GameObjects = new HashSet<GameObject>();
+            _pendingNewGameObjects = new HashSet<GameObject>();
 
-            var position = new Vector2(gameSize.Width * .5f, gameSize.Height * .9f);
-            PlayerShip = new PlayerSpaceShip(100, position, 3);
-            AddNewGameObject(PlayerShip);
+            SpawnPlayer();
+            SpawnBunkers();
+            SpawnEnemyBlock();
 
-            var split = gameSize.Width / 3;
-            var bunkerWidth = Properties.Resources.bunker.Width;
-            for (int i = 0; i < 3; i++)
+            if (_theme != null)
+                _theme.Stop();
+            _theme = Sound.theme;
+            _theme.Play();
+
+            _state = GameState.Play;
+        }
+
+        /// <summary>
+        /// Switch between play pause when P is pressed
+        /// </summary>
+        /// /// <param name="nextState">next game state when P will be pressed</param>
+        private void HandlePlayPause(GameState nextState)
+        {
+            if (KeyPressed.Contains(Keys.P))
             {
-                position = new Vector2(split * (i + .5f) - bunkerWidth * .5f, gameSize.Height * .75);
-                GameObject bunker = new Bunker(position);
-                AddNewGameObject(bunker);
+                ReleaseKey(Keys.P);
+                _state = nextState;
+                if (nextState == GameState.Pause)
+                    _theme.Pause();
+                else
+                    _theme.Play();
             }
+        }
 
-            position = new Vector2(0, 0);
-            enemies = new EnemyBlock(position);
-            AddNewGameObject(enemies);
-            
-            theme.Stop();
-            theme.Play();
+        /// <summary>
+        /// Switch between win and lose depending on the situation
+        /// </summary>
+        private void HandleWinLoss()
+        {
+            if (_enemieBlock.Count == 0)
+                _state = GameState.Win;
+            else if (!PlayerShip.IsAlive())
+                _state = GameState.Lost;
+        }
 
-            state = GameState.Play;
+        /// <summary>
+        /// Switch game state and handle actions depending on it
+        /// </summary>
+        private void HandleGameState(out bool update)
+        {
+            update = false;
+            switch (_state)
+            {
+                case GameState.Play:
+                    update = true;
+                    HandlePlayPause(GameState.Pause);
+                    HandleWinLoss();
+                    break;
+                case GameState.Pause:
+                    HandlePlayPause(GameState.Play);
+                    break;
+                case GameState.Win: case GameState.Lost:
+                    if (KeyPressed.Contains(Keys.Space))
+                    {
+                        ReleaseKey(Keys.Space);
+                        NewGame();
+                    }
+                    break;
+            }
         }
         #endregion
-
     }
 }

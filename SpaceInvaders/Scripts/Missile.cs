@@ -33,9 +33,9 @@ namespace SpaceInvaders
         public override void Update(Game gameInstance, double deltaT)
         {
             Move(moveDirection, speedPixelPerSecond, deltaT);
-            if (Position.y < 0 || gameInstance.gameSize.Height < Position.y) Lives = 0;
+            if (Position.y < 0 || gameInstance.GameSize.Height < Position.y) Lives = 0;
 
-            foreach (var gameObject in gameInstance.gameObjects)
+            foreach (var gameObject in gameInstance.GameObjects)
             {
                 if (gameObject == this) continue;
                 gameObject.Collision(this);

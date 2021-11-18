@@ -58,7 +58,7 @@ namespace SpaceInvaders
                 if (dead && random.NextDouble() <= randomBonusProbability)
                 {
                     var bonus = new Bonus(ship.Position);
-                    Game.game.AddNewGameObject(bonus);
+                    Game.GameInstance.AddNewGameObject(bonus);
                 }
 
                 return dead;
@@ -77,7 +77,7 @@ namespace SpaceInvaders
 
         public override void Update(Game gameInstance, double deltaT)
         {
-            if (Position.x + direction.x < 0 || Position.x + Size.Width + direction.x > gameInstance.gameSize.Width)
+            if (Position.x + direction.x < 0 || Position.x + Size.Width + direction.x > gameInstance.GameSize.Width)
                 ChangeDirection(gameInstance);
 
             Move(direction, speedPixelPerSecond, deltaT);

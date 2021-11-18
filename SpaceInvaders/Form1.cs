@@ -100,7 +100,7 @@ namespace SpaceInvaders
         /// <param name="e"></param>
         private void GameForm_KeyDown(object sender, KeyEventArgs e)
         {
-            game.keyPressed.Add(e.KeyCode);
+            game.KeyPressed.Add(e.KeyCode);
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace SpaceInvaders
         /// <param name="e"></param>
         private void GameForm_KeyUp(object sender, KeyEventArgs e)
         {
-            game.keyPressed.Remove(e.KeyCode);
+            game.KeyPressed.Remove(e.KeyCode);
         }
 
         #endregion

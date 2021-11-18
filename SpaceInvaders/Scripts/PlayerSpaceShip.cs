@@ -20,15 +20,15 @@ namespace SpaceInvaders
         #region Inherited Methods
         public override void Update(Game gameInstance, double deltaT)
         {
-            if (gameInstance.keyPressed.Contains(Keys.Left) && Position.x > 0)
+            if (gameInstance.KeyPressed.Contains(Keys.Left) && Position.x > 0)
             {
                 Move(Vector2.Left, speedPixelPerSecond, deltaT);
             }
-            if (gameInstance.keyPressed.Contains(Keys.Right) && Position.x + Image.Width < gameInstance.gameSize.Width)
+            if (gameInstance.KeyPressed.Contains(Keys.Right) && Position.x + Image.Width < gameInstance.GameSize.Width)
             {
                 Move(Vector2.Right, speedPixelPerSecond, deltaT);
             }
-            if (gameInstance.keyPressed.Contains(Keys.Space))
+            if (gameInstance.KeyPressed.Contains(Keys.Space))
             {
                 gameInstance.ReleaseKey(Keys.Space);
                 Shoot(gameInstance, Vector2.Up);
@@ -40,8 +40,8 @@ namespace SpaceInvaders
             base.Draw(gameInstance, graphics);
 
             var text = string.Concat(Lives, " LIVES");
-            var size = graphics.MeasureString(text, Game.defaultFont);
-            graphics.DrawString(text, Game.defaultFont, Game.blackBrush, gameInstance.gameSize.Width - size.Width, 0);
+            var size = graphics.MeasureString(text, Game.DefaultFont);
+            graphics.DrawString(text, Game.DefaultFont, Game.BlackBrush, gameInstance.GameSize.Width - size.Width, 0);
         }
         #endregion
     }
