@@ -1,10 +1,12 @@
-﻿using System;
+﻿using SpaceInvaders.Controllers;
+using SpaceInvaders.Managers;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Media;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Engine
 {
     /// <summary>
     /// This class represents the entire game, it implements the singleton pattern
@@ -67,20 +69,9 @@ namespace SpaceInvaders
         public readonly HashSet<Keys> KeyPressed = new HashSet<Keys>();
 
         /// <summary>
-        /// GameState enum
-        /// </summary>
-        private enum GameState
-        {
-            Play,
-            Pause,
-            Win,
-            Lost
-        }
-
-        /// <summary>
         /// Current state of the game
         /// </summary>
-        private GameState _state;
+        public GameState State { get; private set; }
 
         /// <summary>
         /// Theme sound of the game
@@ -122,8 +113,9 @@ namespace SpaceInvaders
         /// <param name="gameSize">Size of the game area</param>
         private Game(Size gameSize)
         {
-            this.GameSize = gameSize;
-            NewGame();
+            GameSize = gameSize;
+            GameObjects = new HashSet<GameObject>();
+            _pendingNewGameObjects = new HashSet<GameObject>();
         }
 
         #endregion
@@ -136,8 +128,25 @@ namespace SpaceInvaders
         /// <param name="g">Graphics to draw in</param>
         public void Draw(Graphics g)
         {
-            if (_state == GameState.Pause)
-                g.DrawString("PAUSED", DefaultFont, BlackBrush, 0, 0);
+            switch (State)
+            {
+                case GameState.Start:
+                    g.DrawString("PRESS SPACE TO START", DefaultFont, BlackBrush, 0, 0);
+                    break;
+                case GameState.Play:
+                    g.DrawString(Score.ToString(), DefaultFont, BlackBrush, 0, 0);
+                    break;
+                case GameState.Pause:
+                    g.DrawString("PAUSED", DefaultFont, BlackBrush, 0, 0);
+                    break;
+                case GameState.Win:
+                    break;
+                case GameState.Lost:
+                    break;
+                default:
+                    break;
+            }
+
             foreach (var gameObject in GameObjects)
                 gameObject.Draw(this, g);
         }
@@ -215,6 +224,8 @@ namespace SpaceInvaders
         /// </summary>
         private void NewGame()
         {
+            Score.UpdateLevel();
+
             GameObjects = new HashSet<GameObject>();
             _pendingNewGameObjects = new HashSet<GameObject>();
 
@@ -227,7 +238,7 @@ namespace SpaceInvaders
             _themePlayer = Sound.Theme;
             _themePlayer.Play();
 
-            _state = GameState.Play;
+            State = GameState.Play;
         }
 
         /// <summary>
@@ -238,7 +249,7 @@ namespace SpaceInvaders
         {
             if (!KeyPressed.Contains(Keys.P)) return;
             ReleaseKey(Keys.P);
-            _state = nextState;
+            State = nextState;
             if (nextState == GameState.Pause)
                 _themePlayer.Pause();
             else
@@ -250,10 +261,10 @@ namespace SpaceInvaders
         /// </summary>
         private void HandleWinLoss()
         {
-            if (_enemyBlock!=null && !_enemyBlock.IsAlive())
-                _state = GameState.Win;
+            if (_enemyBlock != null && !_enemyBlock.IsAlive())
+                State = GameState.Win;
             else if (!PlayerShip.IsAlive())
-                _state = GameState.Lost;
+                State = GameState.Lost;
         }
 
         /// <summary>
@@ -262,7 +273,7 @@ namespace SpaceInvaders
         private void HandleGameState(out bool update)
         {
             update = false;
-            switch (_state)
+            switch (State)
             {
                 case GameState.Play:
                     update = true;
@@ -272,6 +283,7 @@ namespace SpaceInvaders
                 case GameState.Pause:
                     HandlePlayPause(GameState.Play);
                     break;
+                case GameState.Start:
                 case GameState.Win:
                 case GameState.Lost:
                     if (KeyPressed.Contains(Keys.Space))
@@ -279,7 +291,6 @@ namespace SpaceInvaders
                         ReleaseKey(Keys.Space);
                         NewGame();
                     }
-
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -287,5 +298,17 @@ namespace SpaceInvaders
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// GameState enum
+    /// </summary>
+    public enum GameState
+    {
+        Start,
+        Play,
+        Pause,
+        Win,
+        Lost
     }
 }

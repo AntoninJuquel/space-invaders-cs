@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Engine
 {
     internal abstract class SimpleObject : GameObject
     {
@@ -46,7 +46,7 @@ namespace SpaceInvaders
         /// <param name="graphics"></param>
         public override void Draw(Game gameInstance, Graphics graphics)
         {
-            graphics.DrawImage(Image, (float) Position.X, (float) Position.Y, Image.Width, Image.Height);
+            graphics.DrawImage(Image, (float)Position.X, (float)Position.Y, Image.Width, Image.Height);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace SpaceInvaders
             var lx2 = simpleObject.Image.Width;
             var ly2 = simpleObject.Image.Height;
 
-            var collision = !((x1 > x2 + lx2) || (x2 > x1 + lx1) || (y1 > y2 + ly2) || (y2 > y1 + ly1));
+            var collision = !(x1 > x2 + lx2 || x2 > x1 + lx1 || y1 > y2 + ly2 || y2 > y1 + ly1);
 
             if (collision) OnCollision(simpleObject);
         }

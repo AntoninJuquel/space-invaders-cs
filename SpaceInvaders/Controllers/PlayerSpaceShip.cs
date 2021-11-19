@@ -1,7 +1,8 @@
 ﻿using System.Windows.Forms;
 using System.Drawing;
+using SpaceInvaders.Engine;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Controllers
 {
     internal class PlayerSpaceShip : SpaceShip
     {
@@ -14,7 +15,7 @@ namespace SpaceInvaders
         /// <param name="position"></param>
         /// <param name="lives"></param>
         public PlayerSpaceShip(double speed, Vector2 position, int lives) : base(speed, position, lives,
-            SpaceInvaders.Properties.Resources.ship3, Side.Ally)
+            Properties.Resources.ship3, Side.Ally)
         {
         }
 

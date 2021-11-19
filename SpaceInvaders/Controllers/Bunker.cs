@@ -1,8 +1,7 @@
-﻿using System;
-using System.Diagnostics;
+﻿using SpaceInvaders.Engine;
 using System.Drawing;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Controllers
 {
     internal class Bunker : SimpleObject
     {
@@ -51,11 +50,10 @@ namespace SpaceInvaders
 
             for (int y = (int)startY; y < (int)startY + missile.Image.Height; y++)
             {
-                if(y < 0 || y >=Image.Height) continue;
+                if (y < 0 || y >= Image.Height) continue;
                 for (int x = (int)startX; x < (int)startX + missile.Image.Width; x++)
                 {
-                    if (x < 0 || x >= Image.Width) continue;
-                    if (Image.GetPixel(x, y).A == 0) continue;
+                    if (x < 0 || x >= Image.Width || Image.GetPixel(x, y).A == 0) continue;
 
                     Image.SetPixel(x, y, Color.Transparent);
                     count++;

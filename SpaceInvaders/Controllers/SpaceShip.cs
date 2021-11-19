@@ -1,13 +1,15 @@
-﻿using System;
+﻿using SpaceInvaders.Engine;
+using SpaceInvaders.Managers;
+using System;
 using System.Drawing;
 using System.Windows.Media;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Controllers
 {
     internal class SpaceShip : SimpleObject
     {
         #region Fields
-
+        public int BaseLives { get; private set; }
         private Missile _missile;
         private readonly MediaPlayer _shootPlayer;
 
@@ -23,10 +25,10 @@ namespace SpaceInvaders
         /// <param name="lives">start lives</param>
         /// <param name="image">start image</param>
         /// <param name="side"></param>
-        public SpaceShip(double speed, Vector2 position, int lives, Bitmap image, Side side) : base(speed, position,
-            lives, image, side)
+        public SpaceShip(double speed, Vector2 position, int lives, Bitmap image, Side side) : base(speed, position, lives, image, side)
         {
             _shootPlayer = Sound.Shoot;
+            BaseLives = lives;
         }
 
         #endregion

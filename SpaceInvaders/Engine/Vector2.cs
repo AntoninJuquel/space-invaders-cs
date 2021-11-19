@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Engine
 {
     internal class Vector2
     {

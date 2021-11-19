@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Engine
 {
     /// <summary>
     /// This is the generic abstract base class for any entity in the game

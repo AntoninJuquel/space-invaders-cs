@@ -1,4 +1,6 @@
-﻿namespace SpaceInvaders
+﻿using SpaceInvaders.Engine;
+
+namespace SpaceInvaders.Controllers
 {
     internal class Bonus : SimpleObject
     {
@@ -26,7 +28,7 @@
             var lx2 = simpleObject.Image.Width;
             var ly2 = simpleObject.Image.Height;
 
-            var collision = !((x1 > x2 + lx2) || (x2 > x1 + lx1) || (y1 > y2 + ly2) || (y2 > y1 + ly1));
+            var collision = !(x1 > x2 + lx2 || x2 > x1 + lx1 || y1 > y2 + ly2 || y2 > y1 + ly1);
 
             if (collision) OnCollision(simpleObject);
         }

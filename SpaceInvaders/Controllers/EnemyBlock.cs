@@ -1,53 +1,55 @@
-﻿using System;
+﻿using SpaceInvaders.Engine;
+using SpaceInvaders.Managers;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Xml;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Controllers
 {
     internal class EnemyBlock : GameObject
     {
         #region Fields
 
         /// <summary>
-        /// 
+        /// Enemy ships living in the block
         /// </summary>
         private readonly HashSet<SpaceShip> _enemyShips;
 
         /// <summary>
-        /// 
+        /// Random class to generate random number
         /// </summary>
         private readonly Random _random = new Random();
 
         /// <summary>
-        /// 
+        /// Current moving direction of the block
         /// </summary>
         private Vector2 _direction;
 
         /// <summary>
-        /// 
+        /// Start width of the block
         /// </summary>
         private int _baseWidth;
 
         /// <summary>
-        /// 
+        /// Shoot probability of enemies
         /// </summary>
         private double _randomShootProbability;
 
         /// <summary>
-        /// 
+        /// Bonus spawn chance on enemy death
         /// </summary>
         private double _randomBonusProbability;
 
         /// <summary>
-        /// 
+        /// Size of the block
         /// </summary>
         private Size Size { get; set; }
 
         /// <summary>
-        /// 
+        /// Array of ship images to access it from index
         /// </summary>
         private readonly Bitmap[] _images = new Bitmap[]
         {
@@ -75,7 +77,7 @@ namespace SpaceInvaders
             _enemyShips = new HashSet<SpaceShip>();
             _direction = Vector2.Right;
 
-            LoadLevel("easy");
+            LoadLevel();
         }
 
         #endregion
@@ -97,6 +99,7 @@ namespace SpaceInvaders
 
                 if (dead)
                 {
+                    Score.AddScore(ship.BaseLives * 100);
                     if (_random.NextDouble() <= _randomBonusProbability)
                     {
                         var bonus = new Bonus(ship.Position);
@@ -117,7 +120,7 @@ namespace SpaceInvaders
         {
             foreach (var enemy in _enemyShips)
                 enemy.Draw(gameInstance, graphics);
-            graphics.DrawRectangle(new Pen(Color.Red), (float) Position.X, (float) Position.Y, Size.Width, Size.Height);
+            graphics.DrawRectangle(new Pen(Color.Red), (float)Position.X, (float)Position.Y, Size.Width, Size.Height);
         }
 
         /// <summary>
@@ -143,8 +146,8 @@ namespace SpaceInvaders
                     enemy.Shoot(gameInstance, Vector2.Down);
             }
 
-            Position.X = (int) _enemyShips.Min(ship => ship.Position.X);
-            Position.Y = (int) _enemyShips.Min(ship => ship.Position.Y);
+            Position.X = (int)_enemyShips.Min(ship => ship.Position.X);
+            Position.Y = (int)_enemyShips.Min(ship => ship.Position.Y);
             UpdateSize();
         }
 
@@ -192,17 +195,14 @@ namespace SpaceInvaders
         /// </summary>
         /// <param name="levelName"></param>
         /// <remarks>Leave levelName empty to load a random level. Levels are stored in the LevelEditor.xml file located in the Resources folder</remarks>
-        private void LoadLevel(string levelName = null)
+        private void LoadLevel()
         {
             var doc = new XmlDocument();
             doc.Load(@"..\..\Resources\LevelEditor.xml");
 
             XmlNode levels = doc["levels"];
             if (levels == null || !levels.HasChildNodes) return;
-            var level = levelName == null
-                ? levels.ChildNodes[_random.Next(levels.ChildNodes.Count)]
-                : levels[levelName];
-
+            XmlNode level = levels.ChildNodes[Score.Level % levels.ChildNodes.Count];
             LoadLevelData(level);
             SpawnLines(level);
         }
@@ -232,10 +232,10 @@ namespace SpaceInvaders
         /// </summary>
         private void UpdateSize()
         {
-            var maxX = (int) _enemyShips.Max(ship => ship.Position.X + ship.Image.Width);
-            var maxY = (int) _enemyShips.Max(ship => ship.Position.Y + ship.Image.Height);
+            var maxX = (int)_enemyShips.Max(ship => ship.Position.X + ship.Image.Width);
+            var maxY = (int)_enemyShips.Max(ship => ship.Position.Y + ship.Image.Height);
 
-            Size = new Size(maxX - (int) Position.X, maxY - (int) Position.Y);
+            Size = new Size(maxX - (int)Position.X, maxY - (int)Position.Y);
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Managers
 {
     internal static class Sound
     {

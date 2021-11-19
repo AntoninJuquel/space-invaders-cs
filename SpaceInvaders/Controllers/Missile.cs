@@ -1,6 +1,7 @@
-﻿using System.Linq;
+﻿using SpaceInvaders.Engine;
+using System.Linq;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Controllers
 {
     internal class Missile : SimpleObject
     {
