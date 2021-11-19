@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Diagnostics;
+using System.Drawing;
 
 namespace SpaceInvaders
 {
@@ -6,8 +8,13 @@ namespace SpaceInvaders
     {
         #region Constructors
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
         public Bunker(Vector2 position) : base(0, position, 1, new Bitmap(Properties.Resources.bunker), Side.Neutral)
         {
+
         }
 
         #endregion
@@ -18,34 +25,44 @@ namespace SpaceInvaders
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="m"></param>
         protected override void OnCollision(SimpleObject m)
         {
-            m.Lives -= IntersectsPixel(m.Position, m.Image);
+            m.Lives -= IntersectsPixel(m as Missile);
         }
 
         #endregion
 
         #region Classic Methods
 
-        private int IntersectsPixel(Vector2 missilePosition, Bitmap missileImage)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="missile"></param>
+        /// <returns></returns>
+        private int IntersectsPixel(Missile missile)
         {
-            var startX = (int) (missilePosition.X - Position.X);
-            var imageDimension = missileImage.Width * missileImage.Height;
-            var toDestroy = imageDimension;
-            for (var x = startX; x < startX + 2; x++)
+            var startX = missile.Position.X - Position.X;
+            var startY = missile.Position.Y - Position.Y;
+            var count = 0;
+
+            for (int y = (int)startY; y < (int)startY + missile.Image.Height; y++)
             {
-                if (x > Image.Width - 1 || x < 0) continue;
-                for (var y = Image.Height - 1; y >= 0; y--)
+                if(y < 0 || y >=Image.Height) continue;
+                for (int x = (int)startX; x < (int)startX + missile.Image.Width; x++)
                 {
-                    var pixel = Image.GetPixel(x, y);
-                    if (pixel.A == 0) continue;
+                    if (x < 0 || x >= Image.Width) continue;
+                    if (Image.GetPixel(x, y).A == 0) continue;
+
                     Image.SetPixel(x, y, Color.Transparent);
-                    toDestroy--;
-                    if (toDestroy == 0) break;
+                    count++;
                 }
             }
 
-            return imageDimension - toDestroy;
+            return count;
         }
 
         #endregion

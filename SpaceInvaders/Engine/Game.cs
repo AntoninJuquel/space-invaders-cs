@@ -250,7 +250,7 @@ namespace SpaceInvaders
         /// </summary>
         private void HandleWinLoss()
         {
-            if (!_enemyBlock.IsAlive())
+            if (_enemyBlock!=null && !_enemyBlock.IsAlive())
                 _state = GameState.Win;
             else if (!PlayerShip.IsAlive())
                 _state = GameState.Lost;
