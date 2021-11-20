@@ -9,7 +9,7 @@ namespace SpaceInvaders.Managers
         /// <summary>
         /// Total points earned killing enemies
         /// </summary>
-        public static int Point { get; private set; }
+        private static int Point { get; set; }
 
         /// <summary>
         /// Current level
@@ -19,7 +19,7 @@ namespace SpaceInvaders.Managers
         /// <summary>
         /// Path of the xml scoreboard to save score
         /// </summary>
-        private const string XML_PATH = @"..\..\Resources\Scoreboard.xml";
+        private const string XmlPath = @"..\..\Resources\Scoreboard.xml";
 
         #endregion
 
@@ -46,21 +46,19 @@ namespace SpaceInvaders.Managers
         public static void Save()
         {
             var doc = new XmlDocument();
-            doc.Load(XML_PATH);
+            doc.Load(XmlPath);
 
             XmlNode scores = doc["scores"];
             if (scores == null) return;
 
             foreach (XmlNode node in scores.ChildNodes)
             {
-                if (System.Convert.ToInt32(node.InnerText) < Point)
-                {
-                    node.InnerText = Point.ToString();
-                    break;
-                }
+                if (System.Convert.ToInt32(node.InnerText) >= Point) continue;
+                node.InnerText = Point.ToString();
+                break;
             }
 
-            doc.Save(XML_PATH);
+            doc.Save(XmlPath);
         }
 
         /// <summary>
@@ -87,22 +85,22 @@ namespace SpaceInvaders.Managers
         /// <summary>
         /// Override ToString() method to return a formated string
         /// </summary>
-        /// <returns>A formated string with the level above the points</returns>
-        public static new string ToString() => string.Concat("Level : ", Level, "\n", Point.ToString("000000"));
+        /// <returns>A formatted string with the level above the points</returns>
+        public new static string ToString() => string.Concat("Level : ", Level, "\n", Point.ToString("000000"));
 
         public static string ScoreBoard()
         {
-            string scoreboard = "";
+            var scoreboard = "";
 
             var doc = new XmlDocument();
-            doc.Load(XML_PATH);
+            doc.Load(XmlPath);
 
             XmlNode scores = doc["scores"];
             if (scores == null) return scoreboard;
 
             foreach (XmlNode node in scores.ChildNodes)
             {
-                scoreboard += string.Concat(System.Convert.ToInt32(node.InnerText).ToString("000000"), "\n"); 
+                scoreboard += string.Concat(System.Convert.ToInt32(node.InnerText).ToString("000000"), "\n");
             }
 
             return scoreboard;

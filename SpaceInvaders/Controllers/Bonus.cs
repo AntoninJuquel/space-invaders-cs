@@ -3,6 +3,16 @@ using System;
 
 namespace SpaceInvaders.Controllers
 {
+    /// <summary>
+    /// Enum of the different bonuses
+    /// </summary>
+    internal enum BonusType
+    {
+        Lives,
+        MultiShot,
+        FasterShot
+    }
+
     internal class Bonus : SimpleObject
     {
         #region Fields
@@ -23,14 +33,15 @@ namespace SpaceInvaders.Controllers
         /// <param name="speed">Initial fall speed</param>
         public Bonus(int speed, Vector2 position) : base(speed, position, 1, Properties.Resources.bonus, Side.Neutral)
         {
-            Array values = Enum.GetValues(typeof(BonusType));
-            Random random = new Random();
-            _bonusType = (BonusType)values.GetValue(random.Next(values.Length));
+            var values = Enum.GetValues(typeof(BonusType));
+            var random = new Random();
+            _bonusType = (BonusType) values.GetValue(random.Next(values.Length));
         }
 
         #endregion
 
         #region Inherited Methods
+
         /// <summary>
         /// Update it's position to fall down and detect collision with the player ship
         /// </summary>
@@ -53,7 +64,7 @@ namespace SpaceInvaders.Controllers
         }
 
         /// <summary>
-        /// When in collision with the player immediatly disapear and apply a bonus depending on the randomly selected type
+        /// When in collision with the player immediately disappear and apply a bonus depending on the randomly selected type
         /// </summary>
         /// <param name="simpleObject"></param>
         protected override void OnCollision(SimpleObject simpleObject)
@@ -66,20 +77,13 @@ namespace SpaceInvaders.Controllers
                     break;
                 case BonusType.MultiShot:
                 case BonusType.FasterShot:
-                    Game.GameInstance.PlayerShip.missileSpeed += 250;
+                    Game.GameInstance.PlayerShip.MissileSpeed += 250;
                     break;
                 default:
-                    break;
+                    throw new ArgumentOutOfRangeException();
             }
         }
-        #endregion
-    }
 
-    /// <summary>
-    /// Enum of the different bonuses
-    /// </summary>
-    enum BonusType
-    {
-        Lives, MultiShot, FasterShot
+        #endregion
     }
 }

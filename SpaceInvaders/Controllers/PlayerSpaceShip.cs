@@ -14,7 +14,8 @@ namespace SpaceInvaders.Controllers
         /// <param name="speed">Initial speed</param>
         /// <param name="position">Starting position</param>
         /// <param name="lives">Starting lives</param>
-        public PlayerSpaceShip(double speed, Vector2 position, int lives) : base(speed, position, lives, Properties.Resources.ship3, Side.Ally)
+        public PlayerSpaceShip(double speed, Vector2 position, int lives) : base(speed, position, lives,
+            Properties.Resources.ship3, Side.Ally)
         {
         }
 

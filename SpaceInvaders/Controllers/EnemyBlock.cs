@@ -67,7 +67,7 @@ namespace SpaceInvaders.Controllers
         /// <summary>
         /// Path of the xml level editor to load levels
         /// </summary>
-        private const string XML_PATH = @"..\..\Resources\LevelEditor.xml";
+        private const string XmlPath = @"..\..\Resources\LevelEditor.xml";
 
         #endregion
 
@@ -125,7 +125,7 @@ namespace SpaceInvaders.Controllers
         {
             foreach (var enemy in _enemyShips)
                 enemy.Draw(gameInstance, graphics);
-            graphics.DrawRectangle(new Pen(Color.Red), (float)Position.X, (float)Position.Y, Size.Width, Size.Height);
+            graphics.DrawRectangle(new Pen(Color.Red), (float) Position.X, (float) Position.Y, Size.Width, Size.Height);
         }
 
         /// <summary>
@@ -151,8 +151,8 @@ namespace SpaceInvaders.Controllers
                     enemy.Shoot(gameInstance, Vector2.Down);
             }
 
-            Position.X = (int)_enemyShips.Min(ship => ship.Position.X);
-            Position.Y = (int)_enemyShips.Min(ship => ship.Position.Y);
+            Position.X = (int) _enemyShips.Min(ship => ship.Position.X);
+            Position.Y = (int) _enemyShips.Min(ship => ship.Position.Y);
             UpdateSize();
         }
 
@@ -198,16 +198,14 @@ namespace SpaceInvaders.Controllers
         /// <summary>
         /// Load a level from the xml file
         /// </summary>
-        /// <param name="levelName"></param>
-        /// <remarks>Leave levelName empty to load a random level. Levels are stored in the LevelEditor.xml file located in the Resources folder</remarks>
         private void LoadLevel()
         {
             var doc = new XmlDocument();
-            doc.Load(XML_PATH);
+            doc.Load(XmlPath);
 
             XmlNode levels = doc["levels"];
             if (levels == null || !levels.HasChildNodes) return;
-            XmlNode level = levels.ChildNodes[Score.Level % levels.ChildNodes.Count];
+            var level = levels.ChildNodes[Score.Level % levels.ChildNodes.Count];
             LoadLevelData(level);
             SpawnLines(level);
         }
@@ -237,10 +235,10 @@ namespace SpaceInvaders.Controllers
         /// </summary>
         private void UpdateSize()
         {
-            var maxX = (int)_enemyShips.Max(ship => ship.Position.X + ship.Image.Width);
-            var maxY = (int)_enemyShips.Max(ship => ship.Position.Y + ship.Image.Height);
+            var maxX = (int) _enemyShips.Max(ship => ship.Position.X + ship.Image.Width);
+            var maxY = (int) _enemyShips.Max(ship => ship.Position.Y + ship.Image.Height);
 
-            Size = new Size(maxX - (int)Position.X, maxY - (int)Position.Y);
+            Size = new Size(maxX - (int) Position.X, maxY - (int) Position.Y);
         }
 
         /// <summary>

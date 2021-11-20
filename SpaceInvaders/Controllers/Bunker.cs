@@ -25,7 +25,7 @@ namespace SpaceInvaders.Controllers
         }
 
         /// <summary>
-        /// When on collision with a missile decrese the missile lives depending on the pixel in collision
+        /// When on collision with a missile decrease the missile lives depending on the pixel in collision
         /// </summary>
         /// <param name="m"></param>
         protected override void OnCollision(SimpleObject m)
@@ -48,10 +48,10 @@ namespace SpaceInvaders.Controllers
             var startY = missile.Position.Y - Position.Y;
             var count = 0;
 
-            for (int y = (int)startY; y < (int)startY + missile.Image.Height; y++)
+            for (var y = (int)startY; y < (int)startY + missile.Image.Height; y++)
             {
                 if (y < 0 || y >= Image.Height) continue;
-                for (int x = (int)startX; x < (int)startX + missile.Image.Width; x++)
+                for (var x = (int)startX; x < (int)startX + missile.Image.Width; x++)
                 {
                     if (x < 0 || x >= Image.Width || Image.GetPixel(x, y).A == 0) continue;
 

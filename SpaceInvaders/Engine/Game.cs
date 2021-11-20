@@ -19,6 +19,7 @@ namespace SpaceInvaders.Engine
         Win,
         Lost
     }
+
     /// <summary>
     /// This class represents the entire game, it implements the singleton pattern
     /// </summary>
@@ -82,7 +83,7 @@ namespace SpaceInvaders.Engine
         /// <summary>
         /// Current state of the game
         /// </summary>
-        public GameState State { get; private set; }
+        private GameState State { get; set; }
 
         /// <summary>
         /// Theme sound of the game
@@ -156,7 +157,7 @@ namespace SpaceInvaders.Engine
                     g.DrawString(Score.ScoreBoard(), DefaultFont, BlackBrush, 0, 0);
                     break;
                 default:
-                    break;
+                    throw new ArgumentOutOfRangeException();
             }
 
             foreach (var gameObject in GameObjects)
@@ -306,6 +307,7 @@ namespace SpaceInvaders.Engine
                         ReleaseKey(Keys.Space);
                         NewGame();
                     }
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

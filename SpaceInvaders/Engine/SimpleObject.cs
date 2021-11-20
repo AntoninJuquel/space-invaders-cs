@@ -40,13 +40,13 @@ namespace SpaceInvaders.Engine
         #region Inherited Methods
 
         /// <summary>
-        /// Draw the object image at his positon with a correct size
+        /// Draw the object image at his position with a correct size
         /// </summary>
         /// <param name="gameInstance"></param>
         /// <param name="graphics"></param>
         public override void Draw(Game gameInstance, Graphics graphics)
         {
-            graphics.DrawImage(Image, (float)Position.X, (float)Position.Y, Image.Width, Image.Height);
+            graphics.DrawImage(Image, (float) Position.X, (float) Position.Y, Image.Width, Image.Height);
         }
 
         /// <summary>

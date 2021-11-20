@@ -5,7 +5,7 @@ namespace SpaceInvaders.Managers
     internal static class Sound
     {
         /// <summary>
-        /// Find the theme.wav ressource of type System.Windows.Media.MediaPlayer.
+        /// Find the theme.wav resource of type System.Windows.Media.MediaPlayer.
         /// </summary>
         internal static MediaPlayer Theme
         {
@@ -18,7 +18,7 @@ namespace SpaceInvaders.Managers
         }
 
         /// <summary>
-        /// Find the shoot.wav ressource of type System.Windows.Media.MediaPlayer.
+        /// Find the shoot.wav resource of type System.Windows.Media.MediaPlayer.
         /// </summary>
         internal static MediaPlayer Shoot
         {

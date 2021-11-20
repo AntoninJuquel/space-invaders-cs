@@ -24,7 +24,8 @@ namespace SpaceInvaders.Controllers
         /// <param name="lives">Lives of the missiles</param>
         /// <param name="direction">Direction of the missile</param>
         /// <param name="side">Side of the missile</param>
-        public Missile(double speed, Vector2 position, int lives, Vector2 direction, Side side) : base(speed, position, lives, Properties.Resources.shoot1, side)
+        public Missile(double speed, Vector2 position, int lives, Vector2 direction, Side side) : base(speed, position,
+            lives, Properties.Resources.shoot1, side)
         {
             _moveDirection = direction;
         }

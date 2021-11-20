@@ -21,7 +21,7 @@ namespace SpaceInvaders.Engine
         /// Return a vector with the same direction with a length of 1
         /// </summary>
         /// <returns>This vector with a magnitude of 1 </returns>
-        public double Norme() => Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2));
+        public double Normalized() => Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2));
 
         public static Vector2 operator +(Vector2 v1, Vector2 v2) => new Vector2(v1.X + v2.X, v1.Y + v2.Y);
         public static Vector2 operator -(Vector2 v1, Vector2 v2) => new Vector2(v1.X - v2.X, v1.Y - v2.Y);
