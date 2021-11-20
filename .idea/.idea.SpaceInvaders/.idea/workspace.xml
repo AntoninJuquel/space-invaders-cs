@@ -4,7 +4,20 @@
     <projectFile>SpaceInvaders/SpaceInvaders.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e6eb9755-b803-445d-9f0f-27afcded07f4" name="Changes" comment="" />
+    <list default="true" id="e6eb9755-b803-445d-9f0f-27afcded07f4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SpaceInvaders/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SpaceInvaders/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Controllers/Bonus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Controllers/Bonus.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Controllers/Bunker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Controllers/Bunker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Controllers/EnemyBlock.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Controllers/EnemyBlock.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Controllers/Missile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Controllers/Missile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Controllers/PlayerSpaceShip.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Controllers/PlayerSpaceShip.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Controllers/SpaceShip.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Controllers/SpaceShip.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Engine/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Engine/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Engine/SimpleObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Engine/SimpleObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Engine/Vector2.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Engine/Vector2.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Managers/Score.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Managers/Score.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpaceInvaders/Managers/Sound.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpaceInvaders/Managers/Sound.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,7 +38,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="liveEdit" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
@@ -56,7 +69,10 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1637274107132</updated>
-      <workItem from="1637274111166" duration="2205000" />
+      <workItem from="1637274111166" duration="2960000" />
+      <workItem from="1637302731283" duration="1799000" />
+      <workItem from="1637304626846" duration="11000" />
+      <workItem from="1637367057342" duration="460000" />
     </task>
     <servers />
   </component>
@@ -64,8 +80,20 @@
     <option name="version" value="3" />
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
-  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
