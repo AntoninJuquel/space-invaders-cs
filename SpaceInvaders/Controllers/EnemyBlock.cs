@@ -64,12 +64,17 @@ namespace SpaceInvaders.Controllers
             Properties.Resources.ship9
         };
 
+        /// <summary>
+        /// Path of the xml level editor to load levels
+        /// </summary>
+        private const string XML_PATH = @"..\..\Resources\LevelEditor.xml";
+
         #endregion
 
         #region Construtors
 
         /// <summary>
-        /// 
+        /// Constructor to spawn enemy ships in block shape on the top left corner depending on the level
         /// </summary>
         /// <param name="position"></param>
         public EnemyBlock(Vector2 position) : base(position, 0, Side.Enemy)
@@ -99,10 +104,10 @@ namespace SpaceInvaders.Controllers
 
                 if (dead)
                 {
-                    Score.AddScore(ship.BaseLives * 100);
+                    Score.AddPoint(ship.BaseLives * 100);
                     if (_random.NextDouble() <= _randomBonusProbability)
                     {
-                        var bonus = new Bonus(ship.Position);
+                        var bonus = new Bonus(50, ship.Position);
                         Game.GameInstance.AddNewGameObject(bonus);
                     }
                 }
@@ -198,7 +203,7 @@ namespace SpaceInvaders.Controllers
         private void LoadLevel()
         {
             var doc = new XmlDocument();
-            doc.Load(@"..\..\Resources\LevelEditor.xml");
+            doc.Load(XML_PATH);
 
             XmlNode levels = doc["levels"];
             if (levels == null || !levels.HasChildNodes) return;

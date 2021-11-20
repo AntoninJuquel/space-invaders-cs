@@ -8,7 +8,7 @@ namespace SpaceInvaders.Controllers
         #region Constructors
 
         /// <summary>
-        /// 
+        /// Simple constructor to place the bunker at a certain position
         /// </summary>
         /// <param name="position"></param>
         public Bunker(Vector2 position) : base(0, position, 1, new Bitmap(Properties.Resources.bunker), Side.Neutral)
@@ -25,7 +25,7 @@ namespace SpaceInvaders.Controllers
         }
 
         /// <summary>
-        /// 
+        /// When on collision with a missile decrese the missile lives depending on the pixel in collision
         /// </summary>
         /// <param name="m"></param>
         protected override void OnCollision(SimpleObject m)
@@ -38,10 +38,10 @@ namespace SpaceInvaders.Controllers
         #region Classic Methods
 
         /// <summary>
-        /// 
+        /// Calculate the number of pixels in collision by converting the missile's pixels position into local position and update the pixels color
         /// </summary>
         /// <param name="missile"></param>
-        /// <returns></returns>
+        /// <returns>Number of pixels hit</returns>
         private int IntersectsPixel(Missile missile)
         {
             var startX = missile.Position.X - Position.X;

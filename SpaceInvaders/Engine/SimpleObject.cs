@@ -21,7 +21,7 @@ namespace SpaceInvaders.Engine
         #region Constructors
 
         /// <summary>
-        /// 
+        /// Constructor to spawn a simple object at a given position
         /// </summary>
         /// <param name="speed"></param>
         /// <param name="position"></param>
@@ -40,7 +40,7 @@ namespace SpaceInvaders.Engine
         #region Inherited Methods
 
         /// <summary>
-        /// 
+        /// Draw the object image at his positon with a correct size
         /// </summary>
         /// <param name="gameInstance"></param>
         /// <param name="graphics"></param>
@@ -50,15 +50,15 @@ namespace SpaceInvaders.Engine
         }
 
         /// <summary>
-        /// 
+        /// Return if the object has enough lives to continue living
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Are my lives above 0 ?</returns>
         public override bool IsAlive() => Lives > 0;
 
         /// <summary>
-        /// 
+        /// Calculate collisions by calculating height and width based on the image of the two simple object
         /// </summary>
-        /// <param name="simpleObject"></param>
+        /// <param name="simpleObject">other</param>
         public override void Collision(SimpleObject simpleObject)
         {
             if (simpleObject.Side == Side) return;
@@ -79,9 +79,9 @@ namespace SpaceInvaders.Engine
         }
 
         /// <summary>
-        /// 
+        /// Called when a collision with a simple object consequences depend on the current object type
         /// </summary>
-        /// <param name="simpleObject"></param>
+        /// <param name="simpleObject">other</param>
         protected abstract void OnCollision(SimpleObject simpleObject);
 
         #endregion

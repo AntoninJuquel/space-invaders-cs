@@ -14,6 +14,11 @@ namespace SpaceInvaders.Engine
 
     internal abstract class GameObject
     {
+        #region Fields
+
+        /// <summary>
+        /// Side of the game object, will ignore any missile of this side
+        /// </summary>
         protected Side Side { get; private set; }
 
         /// <summary>
@@ -26,12 +31,20 @@ namespace SpaceInvaders.Engine
         /// </summary>
         protected double SpeedPixelPerSecond;
 
+        #endregion
+
+        #region Constructors
+
         protected GameObject(Vector2 position, double speed, Side side)
         {
             Position = position;
             SpeedPixelPerSecond = speed;
             Side = side;
         }
+
+        #endregion
+
+        #region Abstract methods
 
         /// <summary>
         /// Update the state of a game objet
@@ -53,10 +66,22 @@ namespace SpaceInvaders.Engine
         /// <returns>Am I alive ?</returns>
         public abstract bool IsAlive();
 
+        /// <summary>
+        /// Called to detect collision with another object
+        /// </summary>
+        /// <param name="simpleObject"></param>
         public abstract void Collision(SimpleObject simpleObject);
+
+        #endregion
 
         #region Protected Methods
 
+        /// <summary>
+        /// Called to move the game object
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <param name="speed"></param>
+        /// <param name="deltaT"></param>
         public void Move(Vector2 direction, double speed, double deltaT)
         {
             Position += direction * (speed * deltaT);

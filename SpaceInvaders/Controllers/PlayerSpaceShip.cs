@@ -9,13 +9,12 @@ namespace SpaceInvaders.Controllers
         #region Constructors
 
         /// <summary>
-        /// 
+        /// Constructor to spawn a player ship accepting inputs at a given position
         /// </summary>
-        /// <param name="speed"></param>
-        /// <param name="position"></param>
-        /// <param name="lives"></param>
-        public PlayerSpaceShip(double speed, Vector2 position, int lives) : base(speed, position, lives,
-            Properties.Resources.ship3, Side.Ally)
+        /// <param name="speed">Initial speed</param>
+        /// <param name="position">Starting position</param>
+        /// <param name="lives">Starting lives</param>
+        public PlayerSpaceShip(double speed, Vector2 position, int lives) : base(speed, position, lives, Properties.Resources.ship3, Side.Ally)
         {
         }
 
@@ -24,7 +23,7 @@ namespace SpaceInvaders.Controllers
         #region Inherited Methods
 
         /// <summary>
-        /// 
+        /// Read player inputs and handle movements and shooting
         /// </summary>
         /// <param name="gameInstance"></param>
         /// <param name="deltaT"></param>
@@ -35,7 +34,7 @@ namespace SpaceInvaders.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Draw text lives and player spaceship
         /// </summary>
         /// <param name="gameInstance"></param>
         /// <param name="graphics"></param>
@@ -53,7 +52,7 @@ namespace SpaceInvaders.Controllers
         #region Methods
 
         /// <summary>
-        /// 
+        /// Move along the X axis depending on the input at a certain speed
         /// </summary>
         private void HandleMovements(Game gameInstance, double deltaT)
         {
@@ -64,7 +63,7 @@ namespace SpaceInvaders.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Call shoot if the player hit space
         /// </summary>
         /// <param name="gameInstance"></param>
         private void HandleShoot(Game gameInstance)

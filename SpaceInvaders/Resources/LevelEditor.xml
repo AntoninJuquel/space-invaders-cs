@@ -23,7 +23,7 @@
 			<bonus>0.1</bonus>
 		</probabilities>
 		<stats>
-			<speed>50</speed>
+			<speed>500</speed>
 			<width>250</width>
 		</stats>
 	</easy>

@@ -12,13 +12,14 @@ namespace SpaceInvaders.Controllers
         public int BaseLives { get; private set; }
         private Missile _missile;
         private readonly MediaPlayer _shootPlayer;
+        public int missileSpeed = 500;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Simple constructor
+        /// Constructor to spawn a spaceship at a given position, his side will detemine which missile to ignore
         /// </summary>
         /// <param name="speed">start speed</param>
         /// <param name="position">start position</param>
@@ -39,6 +40,10 @@ namespace SpaceInvaders.Controllers
         {
         }
 
+        /// <summary>
+        /// On collision remove lives to both of the missile and the spacship, the weaker will die
+        /// </summary>
+        /// <param name="m">missisle</param>
         protected override void OnCollision(SimpleObject m)
         {
             var min = Math.Min(m.Lives, Lives);
@@ -50,11 +55,16 @@ namespace SpaceInvaders.Controllers
 
         #region Methods
 
+        /// <summary>
+        /// Shoot a missile at spaceship position with a given direction to move along with, skip if a missile from this spaceship is already on the screen
+        /// </summary>
+        /// <param name="gameInstance"></param>
+        /// <param name="direction"></param>
         public void Shoot(Game gameInstance, Vector2 direction)
         {
             if (_missile != null && _missile.IsAlive()) return;
             var position = Position + new Vector2(Image.Width * .5f);
-            _missile = new Missile(500, position, 1, direction, Side);
+            _missile = new Missile(missileSpeed, position, 1, direction, Side);
             gameInstance.AddNewGameObject(_missile);
             _shootPlayer.Stop();
             _shootPlayer.Play();

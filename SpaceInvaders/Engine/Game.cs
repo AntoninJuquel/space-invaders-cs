@@ -9,6 +9,17 @@ using System.Windows.Media;
 namespace SpaceInvaders.Engine
 {
     /// <summary>
+    /// GameState enum
+    /// </summary>
+    public enum GameState
+    {
+        Start,
+        Play,
+        Pause,
+        Win,
+        Lost
+    }
+    /// <summary>
     /// This class represents the entire game, it implements the singleton pattern
     /// </summary>
     internal class Game
@@ -142,6 +153,7 @@ namespace SpaceInvaders.Engine
                 case GameState.Win:
                     break;
                 case GameState.Lost:
+                    g.DrawString(Score.ScoreBoard(), DefaultFont, BlackBrush, 0, 0);
                     break;
                 default:
                     break;
@@ -224,7 +236,7 @@ namespace SpaceInvaders.Engine
         /// </summary>
         private void NewGame()
         {
-            Score.UpdateLevel();
+            Score.UpdateLevel(State == GameState.Lost);
 
             GameObjects = new HashSet<GameObject>();
             _pendingNewGameObjects = new HashSet<GameObject>();
@@ -264,7 +276,10 @@ namespace SpaceInvaders.Engine
             if (_enemyBlock != null && !_enemyBlock.IsAlive())
                 State = GameState.Win;
             else if (!PlayerShip.IsAlive())
+            {
+                Score.Save();
                 State = GameState.Lost;
+            }
         }
 
         /// <summary>
@@ -298,17 +313,5 @@ namespace SpaceInvaders.Engine
         }
 
         #endregion
-    }
-
-    /// <summary>
-    /// GameState enum
-    /// </summary>
-    public enum GameState
-    {
-        Start,
-        Play,
-        Pause,
-        Win,
-        Lost
     }
 }
