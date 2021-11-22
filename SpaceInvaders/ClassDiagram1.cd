@@ -1,16 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="SpaceInvaders.Engine.Game">
-    <Position X="10.75" Y="1.5" Width="2.5" />
-    <AssociationLine Name="PlayerShip" Type="SpaceInvaders.Controllers.PlayerSpaceShip" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="12.812" Y="6.776" />
-        <Point X="12.812" Y="17.251" />
-        <Point X="2" Y="17.251" />
-      </Path>
-    </AssociationLine>
+    <Position X="12.25" Y="1.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAYAIQAUAQAIghAAgAACEAEABAAAAAAAAgAgABBAEQg=</HashCode>
+      <HashCode>AAYAIQAUAQAYghAAgAACEAEABAAAAAAAAgAgABBAEQg=</HashCode>
       <FileName>Engine\Game.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -23,9 +16,9 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="SpaceInvaders.Engine.GameObject">
-    <Position X="4.25" Y="5" Width="1.5" />
+    <Position X="5.75" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQQAAAAAAIAAggAgAAAACAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <HashCode>AQQAAAAAAIAAggAgAAAACAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
       <FileName>Engine\GameObject.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -34,42 +27,42 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="SpaceInvaders.Engine.SimpleObject">
-    <Position X="1.25" Y="9" Width="1.5" />
+    <Position X="4.75" Y="8.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAAAAAAIAAIgAgAAgAAAAAAAAAEBACIAAAAAAAAAA=</HashCode>
       <FileName>Engine\SimpleObject.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SpaceInvaders.Engine.Vector2">
-    <Position X="4.25" Y="0.5" Width="1.5" />
+    <Position X="5.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAMAAAAAAAAAYAUAAAAAAAAAAAAACACAAAAAYAI=</HashCode>
       <FileName>Engine\Vector2.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SpaceInvaders.Controllers.SpaceShip">
-    <Position X="0.5" Y="12.75" Width="1.5" />
+    <Position X="8.5" Y="12.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AASAAAAAAAAABAAAAAAABAAAAAAAAAAAIAAAAAAACEA=</HashCode>
       <FileName>Controllers\SpaceShip.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SpaceInvaders.Controllers.PlayerSpaceShip">
-    <Position X="0.5" Y="16.25" Width="1.5" />
+    <Position X="6.5" Y="16" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAAAAAAgAAAAAAAgAAAAAAAAAAAAAAACAAAAA=</HashCode>
       <FileName>Controllers\PlayerSpaceShip.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SpaceInvaders.Controllers.Missile">
-    <Position X="2.75" Y="12.75" Width="1.5" />
+    <Position X="6.5" Y="13.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAAAAAAAAAAAAAAACAAAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Controllers\Missile.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SpaceInvaders.Controllers.EnemyBlock">
-    <Position X="10.25" Y="9" Width="2" />
+    <Position X="11.25" Y="9" Width="2" />
     <TypeIdentifier>
       <HashCode>AQwAgQACAIAIogAAAAAAAAAEEAAAgCQQAAQAAAAAAAE=</HashCode>
       <FileName>Controllers\EnemyBlock.cs</FileName>
@@ -79,14 +72,20 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="SpaceInvaders.Controllers.Bunker">
-    <Position X="5.25" Y="12.75" Width="1.5" />
+    <Position X="2.5" Y="12.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAAAAAAAAAAAAEAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Controllers\Bunker.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SpaceInvaders.Controllers.Bonus">
-    <Position X="7.25" Y="12.75" Width="1.5" />
+    <Position X="0.75" Y="13.25" Width="1.5" />
+    <AssociationLine Name="bonusType" Type="SpaceInvaders.Controllers.BonusType" FixedFromPoint="true">
+      <Path>
+        <Point X="0.875" Y="13.25" />
+        <Point X="0.875" Y="11.989" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAQAAAAAAIAAAAABAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Controllers\Bonus.cs</FileName>
@@ -110,21 +109,21 @@
     </TypeIdentifier>
   </Class>
   <Enum Name="SpaceInvaders.Engine.GameState">
-    <Position X="7.25" Y="1.5" Width="1.75" />
+    <Position X="9.75" Y="1.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAgAACAACAAAAAAAEAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
       <FileName>Engine\Game.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="SpaceInvaders.Engine.Side">
-    <Position X="1.5" Y="5.75" Width="1.5" />
+    <Position X="1.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAQAAAIAAAAAAAAAAAAAA=</HashCode>
       <FileName>Engine\GameObject.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="SpaceInvaders.Controllers.BonusType">
-    <Position X="8" Y="10.5" Width="1.5" />
+    <Position X="0.75" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAABA=</HashCode>
       <FileName>Controllers\Bonus.cs</FileName>
