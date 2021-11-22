@@ -8,9 +8,9 @@ namespace SpaceInvaders.Controllers
     /// </summary>
     internal enum BonusType
     {
-        Lives,
-        MultiShot,
-        FasterShot
+        AddLives,
+        MoveFaster,
+        ShootFaster
     }
 
     internal class Bonus : SimpleObject
@@ -20,7 +20,7 @@ namespace SpaceInvaders.Controllers
         /// <summary>
         /// Type of the bonus will change his effect, currently selected randomly
         /// </summary>
-        private readonly BonusType _bonusType;
+        private readonly BonusType bonusType;
 
         #endregion
 
@@ -35,7 +35,7 @@ namespace SpaceInvaders.Controllers
         {
             var values = Enum.GetValues(typeof(BonusType));
             var random = new Random();
-            _bonusType = (BonusType) values.GetValue(random.Next(values.Length));
+            bonusType = (BonusType) values.GetValue(random.Next(values.Length));
         }
 
         #endregion
@@ -49,7 +49,7 @@ namespace SpaceInvaders.Controllers
         /// <param name="deltaT"></param>
         public override void Update(Game gameInstance, double deltaT)
         {
-            Move(Vector2.Down, SpeedPixelPerSecond, deltaT);
+            Move(Vector2.Down, speedPixelPerSecond, deltaT);
             Collision(gameInstance.PlayerShip);
         }
 
@@ -69,15 +69,17 @@ namespace SpaceInvaders.Controllers
         /// <param name="simpleObject"></param>
         protected override void OnCollision(SimpleObject simpleObject)
         {
-            Lives = 0;
-            switch (_bonusType)
+            Die();
+            switch (bonusType)
             {
-                case BonusType.Lives:
-                    simpleObject.Lives++;
+                case BonusType.AddLives:
+                    simpleObject.AddLives(1);
                     break;
-                case BonusType.MultiShot:
-                case BonusType.FasterShot:
-                    Game.GameInstance.PlayerShip.MissileSpeed += 250;
+                case BonusType.MoveFaster:
+                    simpleObject.AddSpeed(2);
+                    break;
+                case BonusType.ShootFaster:
+                    Game.GameInstance.PlayerShip.AddMissileSpeed(250);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

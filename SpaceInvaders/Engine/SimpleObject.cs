@@ -9,7 +9,13 @@ namespace SpaceInvaders.Engine
         /// <summary>
         /// Lives number of a simple object
         /// </summary>
-        public int Lives { get; set; }
+        public int Lives { get; private set; }
+
+
+        /// <summary>
+        /// Base lives of a simple object
+        /// </summary>
+        public int BaseLives { get; private set; }
 
         /// <summary>
         /// Object image
@@ -28,10 +34,9 @@ namespace SpaceInvaders.Engine
         /// <param name="lives"></param>
         /// <param name="image"></param>
         /// <param name="side"></param>
-        protected SimpleObject(double speed, Vector2 position, int lives, Bitmap image, Side side) : base(position,
-            speed, side)
+        private protected SimpleObject(double speed, Vector2 position, int lives, Bitmap image, Side side) : base(position, speed, side)
         {
-            Lives = lives;
+            BaseLives = Lives = lives;
             Image = image;
         }
 
@@ -83,6 +88,14 @@ namespace SpaceInvaders.Engine
         /// </summary>
         /// <param name="simpleObject">other</param>
         protected abstract void OnCollision(SimpleObject simpleObject);
+
+        #endregion
+
+        #region Methods
+
+        public void AddLives(int amount) => Lives += amount;
+        public void RemoveLives(int amount) => Lives -= amount;
+        public void Die() => Lives = 0;
 
         #endregion
     }

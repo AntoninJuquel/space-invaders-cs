@@ -14,8 +14,7 @@ namespace SpaceInvaders.Controllers
         /// <param name="speed">Initial speed</param>
         /// <param name="position">Starting position</param>
         /// <param name="lives">Starting lives</param>
-        public PlayerSpaceShip(double speed, Vector2 position, int lives) : base(speed, position, lives,
-            Properties.Resources.ship3, Side.Ally)
+        public PlayerSpaceShip(double speed, Vector2 position, int lives) : base(speed, position, lives, Properties.Resources.ship3, Side.Ally)
         {
         }
 
@@ -43,7 +42,7 @@ namespace SpaceInvaders.Controllers
         {
             base.Draw(gameInstance, graphics);
 
-            var text = string.Concat(Lives, " LIVES");
+            var text = string.Concat("LIVES : ",Lives);
             var size = graphics.MeasureString(text, Game.DefaultFont);
             graphics.DrawString(text, Game.DefaultFont, Game.BlackBrush, gameInstance.GameSize.Width - size.Width, 0);
         }
@@ -58,9 +57,9 @@ namespace SpaceInvaders.Controllers
         private void HandleMovements(Game gameInstance, double deltaT)
         {
             if (gameInstance.KeyPressed.Contains(Keys.Left) && Position.X > 0)
-                Move(Vector2.Left, SpeedPixelPerSecond, deltaT);
+                Move(Vector2.Left, speedPixelPerSecond, deltaT);
             if (gameInstance.KeyPressed.Contains(Keys.Right) && Position.X + Image.Width < gameInstance.GameSize.Width)
-                Move(Vector2.Right, SpeedPixelPerSecond, deltaT);
+                Move(Vector2.Right, speedPixelPerSecond, deltaT);
         }
 
         /// <summary>

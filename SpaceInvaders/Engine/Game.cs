@@ -54,7 +54,7 @@ namespace SpaceInvaders.Engine
         /// <summary>
         /// Set of new game objects scheduled for addition to the game
         /// </summary>
-        private HashSet<GameObject> _pendingNewGameObjects;
+        private HashSet<GameObject> pendingNewGameObjects = new HashSet<GameObject>();
 
         /// <summary>
         /// Schedule a new object for addition in the game.
@@ -63,7 +63,7 @@ namespace SpaceInvaders.Engine
         /// <param name="gameObject">object to add</param>
         public void AddNewGameObject(GameObject gameObject)
         {
-            _pendingNewGameObjects.Add(gameObject);
+            pendingNewGameObjects.Add(gameObject);
         }
 
         #endregion
@@ -73,7 +73,7 @@ namespace SpaceInvaders.Engine
         /// <summary>
         /// Size of the game area
         /// </summary>
-        public Size GameSize;
+        public Size GameSize { get; private set; }
 
         /// <summary>
         /// State of the keyboard
@@ -83,12 +83,12 @@ namespace SpaceInvaders.Engine
         /// <summary>
         /// Current state of the game
         /// </summary>
-        private GameState State { get; set; }
+        private GameState gameState;
 
         /// <summary>
         /// Theme sound of the game
         /// </summary>
-        private MediaPlayer _themePlayer;
+        private readonly MediaPlayer themePlayer = Sound.Theme;
 
         #endregion
 
@@ -102,7 +102,7 @@ namespace SpaceInvaders.Engine
         /// <summary>
         /// Block of enemies moving on the screen
         /// </summary>
-        private EnemyBlock _enemyBlock;
+        private EnemyBlock enemyBlock;
 
         #endregion
 
@@ -127,7 +127,7 @@ namespace SpaceInvaders.Engine
         {
             GameSize = gameSize;
             GameObjects = new HashSet<GameObject>();
-            _pendingNewGameObjects = new HashSet<GameObject>();
+            pendingNewGameObjects = new HashSet<GameObject>();
         }
 
         #endregion
@@ -140,26 +140,7 @@ namespace SpaceInvaders.Engine
         /// <param name="g">Graphics to draw in</param>
         public void Draw(Graphics g)
         {
-            switch (State)
-            {
-                case GameState.Start:
-                    g.DrawString("PRESS SPACE TO START", DefaultFont, BlackBrush, 0, 0);
-                    break;
-                case GameState.Play:
-                    g.DrawString(Score.ToString(), DefaultFont, BlackBrush, 0, 0);
-                    break;
-                case GameState.Pause:
-                    g.DrawString("PAUSED", DefaultFont, BlackBrush, 0, 0);
-                    break;
-                case GameState.Win:
-                    break;
-                case GameState.Lost:
-                    g.DrawString(Score.ScoreBoard(), DefaultFont, BlackBrush, 0, 0);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
+            DrawGameMessage(g);
             foreach (var gameObject in GameObjects)
                 gameObject.Draw(this, g);
         }
@@ -173,8 +154,8 @@ namespace SpaceInvaders.Engine
             HandleGameState(out var update);
             if (!update) return;
             // add new game objects
-            GameObjects.UnionWith(_pendingNewGameObjects);
-            _pendingNewGameObjects.Clear();
+            GameObjects.UnionWith(pendingNewGameObjects);
+            pendingNewGameObjects.Clear();
 
             // update each game object
             foreach (var gameObject in GameObjects)
@@ -228,8 +209,8 @@ namespace SpaceInvaders.Engine
         /// </summary>
         private void SpawnEnemyBlock()
         {
-            _enemyBlock = new EnemyBlock(new Vector2());
-            AddNewGameObject(_enemyBlock);
+            enemyBlock = new EnemyBlock(new Vector2());
+            AddNewGameObject(enemyBlock);
         }
 
         /// <summary>
@@ -237,21 +218,19 @@ namespace SpaceInvaders.Engine
         /// </summary>
         private void NewGame()
         {
-            Score.UpdateLevel(State == GameState.Lost);
+            Score.UpdateLevel(gameState == GameState.Lost);
 
             GameObjects = new HashSet<GameObject>();
-            _pendingNewGameObjects = new HashSet<GameObject>();
+            pendingNewGameObjects = new HashSet<GameObject>();
 
             SpawnPlayer();
             SpawnBunkers();
             SpawnEnemyBlock();
 
-            if (_themePlayer != null)
-                _themePlayer.Stop();
-            _themePlayer = Sound.Theme;
-            _themePlayer.Play();
+            themePlayer.Stop();
+            themePlayer.Play();
 
-            State = GameState.Play;
+            gameState = GameState.Play;
         }
 
         /// <summary>
@@ -262,11 +241,11 @@ namespace SpaceInvaders.Engine
         {
             if (!KeyPressed.Contains(Keys.P)) return;
             ReleaseKey(Keys.P);
-            State = nextState;
+            gameState = nextState;
             if (nextState == GameState.Pause)
-                _themePlayer.Pause();
+                themePlayer.Pause();
             else
-                _themePlayer.Play();
+                themePlayer.Play();
         }
 
         /// <summary>
@@ -274,12 +253,12 @@ namespace SpaceInvaders.Engine
         /// </summary>
         private void HandleWinLoss()
         {
-            if (_enemyBlock != null && !_enemyBlock.IsAlive())
-                State = GameState.Win;
+            if (enemyBlock != null && !enemyBlock.IsAlive())
+                gameState = GameState.Win;
             else if (!PlayerShip.IsAlive())
             {
                 Score.Save();
-                State = GameState.Lost;
+                gameState = GameState.Lost;
             }
         }
 
@@ -289,7 +268,7 @@ namespace SpaceInvaders.Engine
         private void HandleGameState(out bool update)
         {
             update = false;
-            switch (State)
+            switch (gameState)
             {
                 case GameState.Play:
                     update = true;
@@ -312,6 +291,51 @@ namespace SpaceInvaders.Engine
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void DrawGameMessage(Graphics g)
+        {
+            var text = "";
+            SizeF textSize;
+            float positionX = 0;
+            float positionY = 0;
+
+            switch (gameState)
+            {
+                case GameState.Start:
+                    text = "PRESS SPACE TO START";
+                    textSize = g.MeasureString(text, DefaultFont);
+                    positionX = GameSize.Width * .5f - textSize.Width * .5f;
+                    positionY = GameSize.Height * .5f - textSize.Height * .5f;
+                    break;
+                case GameState.Play:
+                    g.DrawString(Score.ToString(), DefaultFont, BlackBrush, 0, 0);
+                    break;
+                case GameState.Pause:
+                    text = "PAUSED";
+                    textSize = g.MeasureString(text, DefaultFont);
+                    positionX = GameSize.Width * .5f - textSize.Width * .5f;
+                    positionY = GameSize.Height * .5f - textSize.Height * .5f;
+                    g.DrawString(Score.ToString(), DefaultFont, BlackBrush, 0, 0);
+                    break;
+                case GameState.Win:
+                    text = "PRESS SPACE TO CONTINUE";
+                    textSize = g.MeasureString(text, DefaultFont);
+                    positionX = GameSize.Width * .5f - textSize.Width * .5f;
+                    positionY = GameSize.Height * .5f - textSize.Height * .5f;
+                    break;
+                case GameState.Lost:
+                    g.DrawString(Score.ScoreBoard(), DefaultFont, BlackBrush, 0, 0);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+
+            g.DrawString(text, DefaultFont, BlackBrush, positionX, positionY);
         }
 
         #endregion

@@ -28,9 +28,10 @@ namespace SpaceInvaders.Controllers
         /// When on collision with a missile decrease the missile lives depending on the pixel in collision
         /// </summary>
         /// <param name="m"></param>
-        protected override void OnCollision(SimpleObject m)
+        protected override void OnCollision(SimpleObject simpleObject)
         {
-            m.Lives -= IntersectsPixel(m as Missile);
+            if (simpleObject is Missile)
+                simpleObject.RemoveLives(IntersectsPixel(simpleObject));
         }
 
         #endregion
@@ -42,16 +43,16 @@ namespace SpaceInvaders.Controllers
         /// </summary>
         /// <param name="missile"></param>
         /// <returns>Number of pixels hit</returns>
-        private int IntersectsPixel(Missile missile)
+        private int IntersectsPixel(SimpleObject simpleObject)
         {
-            var startX = missile.Position.X - Position.X;
-            var startY = missile.Position.Y - Position.Y;
+            var startX = simpleObject.Position.X - Position.X;
+            var startY = simpleObject.Position.Y - Position.Y;
             var count = 0;
 
-            for (var y = (int)startY; y < (int)startY + missile.Image.Height; y++)
+            for (var y = (int)startY; y < (int)startY + simpleObject.Image.Height; y++)
             {
                 if (y < 0 || y >= Image.Height) continue;
-                for (var x = (int)startX; x < (int)startX + missile.Image.Width; x++)
+                for (var x = (int)startX; x < (int)startX + simpleObject.Image.Width; x++)
                 {
                     if (x < 0 || x >= Image.Width || Image.GetPixel(x, y).A == 0) continue;
 

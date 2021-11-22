@@ -90,7 +90,7 @@ namespace SpaceInvaders.Managers
 
         public static string ScoreBoard()
         {
-            var scoreboard = "";
+            var scoreboard = "SCOREBOARD\n";
 
             var doc = new XmlDocument();
             doc.Load(XmlPath);
@@ -99,9 +99,7 @@ namespace SpaceInvaders.Managers
             if (scores == null) return scoreboard;
 
             foreach (XmlNode node in scores.ChildNodes)
-            {
                 scoreboard += string.Concat(System.Convert.ToInt32(node.InnerText).ToString("000000"), "\n");
-            }
 
             return scoreboard;
         }

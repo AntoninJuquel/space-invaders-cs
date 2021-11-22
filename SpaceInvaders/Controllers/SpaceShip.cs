@@ -10,10 +10,9 @@ namespace SpaceInvaders.Controllers
     {
         #region Fields
 
-        public int BaseLives { get; private set; }
-        private Missile _missile;
-        private readonly MediaPlayer _shootPlayer;
-        public int MissileSpeed = 500;
+        private Missile missile;
+        private readonly MediaPlayer shootPlayer = Sound.Shoot;
+        private double missileSpeed = 500;
 
         #endregion
 
@@ -27,11 +26,9 @@ namespace SpaceInvaders.Controllers
         /// <param name="lives">start lives</param>
         /// <param name="image">start image</param>
         /// <param name="side"></param>
-        public SpaceShip(double speed, Vector2 position, int lives, Bitmap image, Side side) : base(speed, position,
-            lives, image, side)
+        public SpaceShip(double speed, Vector2 position, int lives, Bitmap image, Side side) : base(speed, position, lives, image, side)
         {
-            _shootPlayer = Sound.Shoot;
-            BaseLives = lives;
+
         }
 
         #endregion
@@ -45,12 +42,15 @@ namespace SpaceInvaders.Controllers
         /// <summary>
         /// On collision remove lives to both of the missile and the spaceship, the weaker will die
         /// </summary>
-        /// <param name="m">missile</param>
-        protected override void OnCollision(SimpleObject m)
+        /// <param name="simpleObject">simple object who called for collision</param>
+        protected override void OnCollision(SimpleObject simpleObject)
         {
-            var min = Math.Min(m.Lives, Lives);
-            Lives -= min;
-            m.Lives -= min;
+            if (simpleObject is Missile)
+            {
+                var min = Math.Min(simpleObject.Lives, Lives);
+                RemoveLives(min);
+                simpleObject.RemoveLives(min);
+            }
         }
 
         #endregion
@@ -64,12 +64,17 @@ namespace SpaceInvaders.Controllers
         /// <param name="direction"></param>
         public void Shoot(Game gameInstance, Vector2 direction)
         {
-            if (_missile != null && _missile.IsAlive()) return;
+            if (missile != null && missile.IsAlive()) return;
             var position = Position + new Vector2(Image.Width * .5f);
-            _missile = new Missile(MissileSpeed, position, 1, direction, Side);
-            gameInstance.AddNewGameObject(_missile);
-            _shootPlayer.Stop();
-            _shootPlayer.Play();
+            missile = new Missile(missileSpeed, position, 1, direction, Side);
+            gameInstance.AddNewGameObject(missile);
+            shootPlayer.Stop();
+            shootPlayer.Play();
+        }
+
+        public void AddMissileSpeed(int amount)
+        {
+            missileSpeed += amount;
         }
 
         #endregion

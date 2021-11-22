@@ -24,22 +24,22 @@ namespace SpaceInvaders.Engine
         /// <summary>
         /// Object position
         /// </summary>
-        public Vector2 Position { get; set; }
+        public Vector2 Position { get; private set; }
 
         /// <summary>
         /// Object movement speed
         /// </summary>
-        protected double SpeedPixelPerSecond;
+        protected double speedPixelPerSecond;
 
         #endregion
 
         #region Constructors
 
-        protected GameObject(Vector2 position, double speed, Side side)
+        private protected GameObject(Vector2 position, double speed, Side side)
         {
             Position = position;
-            SpeedPixelPerSecond = speed;
             Side = side;
+            speedPixelPerSecond = speed;
         }
 
         #endregion
@@ -77,15 +77,26 @@ namespace SpaceInvaders.Engine
         #region Protected Methods
 
         /// <summary>
-        /// Called to move the game object
+        /// Move the game object over time
         /// </summary>
         /// <param name="direction"></param>
         /// <param name="speed"></param>
         /// <param name="deltaT"></param>
-        public void Move(Vector2 direction, double speed, double deltaT)
-        {
-            Position += direction * (speed * deltaT);
-        }
+        public void Move(Vector2 direction, double speed, double deltaT) => Position += direction * (speed * deltaT);
+
+
+        /// <summary>
+        /// Move the game object at a certain distance
+        /// </summary>
+        /// <param name="direction">direction to move</param>
+        /// <param name="distance">distance to move in world units</param>
+        public void Move(Vector2 direction, double distance) => Position += direction * distance;
+
+        /// <summary>
+        /// Add an amount of speed to the game object
+        /// </summary>
+        /// <param name="amount"></param>
+        public void AddSpeed(double amount) => speedPixelPerSecond += amount;
 
         #endregion
     }

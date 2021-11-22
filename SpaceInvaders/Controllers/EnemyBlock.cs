@@ -16,32 +16,32 @@ namespace SpaceInvaders.Controllers
         /// <summary>
         /// Enemy ships living in the block
         /// </summary>
-        private readonly HashSet<SpaceShip> _enemyShips;
+        private readonly HashSet<SpaceShip> enemyShips;
 
         /// <summary>
         /// Random class to generate random number
         /// </summary>
-        private readonly Random _random = new Random();
+        private readonly Random random = new Random();
 
         /// <summary>
         /// Current moving direction of the block
         /// </summary>
-        private Vector2 _direction;
+        private Vector2 direction;
 
         /// <summary>
         /// Start width of the block
         /// </summary>
-        private int _baseWidth;
+        private int baseWidth;
 
         /// <summary>
         /// Shoot probability of enemies
         /// </summary>
-        private double _randomShootProbability;
+        private double randomShootProbability;
 
         /// <summary>
         /// Bonus spawn chance on enemy death
         /// </summary>
-        private double _randomBonusProbability;
+        private double randomBonusProbability;
 
         /// <summary>
         /// Size of the block
@@ -51,7 +51,7 @@ namespace SpaceInvaders.Controllers
         /// <summary>
         /// Array of ship images to access it from index
         /// </summary>
-        private readonly Bitmap[] _images = new Bitmap[]
+        private readonly Bitmap[] images = new Bitmap[]
         {
             Properties.Resources.ship1,
             Properties.Resources.ship2,
@@ -79,8 +79,8 @@ namespace SpaceInvaders.Controllers
         /// <param name="position"></param>
         public EnemyBlock(Vector2 position) : base(position, 0, Side.Enemy)
         {
-            _enemyShips = new HashSet<SpaceShip>();
-            _direction = Vector2.Right;
+            enemyShips = new HashSet<SpaceShip>();
+            direction = Vector2.Right;
 
             LoadLevel();
         }
@@ -95,17 +95,17 @@ namespace SpaceInvaders.Controllers
         /// <param name="m"></param>
         public override void Collision(SimpleObject m)
         {
-            foreach (var enemy in _enemyShips)
+            foreach (var enemy in enemyShips)
                 enemy.Collision(m);
 
-            _enemyShips.RemoveWhere(ship =>
+            enemyShips.RemoveWhere(ship =>
             {
                 var dead = !ship.IsAlive();
 
                 if (dead)
                 {
                     Score.AddPoint(ship.BaseLives * 100);
-                    if (_random.NextDouble() <= _randomBonusProbability)
+                    if (random.NextDouble() <= randomBonusProbability)
                     {
                         var bonus = new Bonus(50, ship.Position);
                         Game.GameInstance.AddNewGameObject(bonus);
@@ -123,16 +123,16 @@ namespace SpaceInvaders.Controllers
         /// <param name="graphics"></param>
         public override void Draw(Game gameInstance, Graphics graphics)
         {
-            foreach (var enemy in _enemyShips)
+            foreach (var enemy in enemyShips)
                 enemy.Draw(gameInstance, graphics);
-            graphics.DrawRectangle(new Pen(Color.Red), (float) Position.X, (float) Position.Y, Size.Width, Size.Height);
+            graphics.DrawRectangle(new Pen(Color.Red), (float)Position.X, (float)Position.Y, Size.Width, Size.Height);
         }
 
         /// <summary>
         /// EnemyBlock is alive if the size of the enemy ships is above 0. If false the game is won
         /// </summary>
         /// <returns>Is there any ship left ?</returns>
-        public override bool IsAlive() => _enemyShips.Count > 0;
+        public override bool IsAlive() => enemyShips.Count > 0;
 
         /// <summary>
         /// Called every frame to update each enemies position, shoot randomly and update the size of the block
@@ -141,18 +141,18 @@ namespace SpaceInvaders.Controllers
         /// <param name="deltaT"></param>
         public override void Update(Game gameInstance, double deltaT)
         {
-            if (Position.X + _direction.X < 0 || Position.X + Size.Width + _direction.X > gameInstance.GameSize.Width)
+            if (Position.X + direction.X < 0 || Position.X + Size.Width + direction.X > gameInstance.GameSize.Width)
                 ChangeDirection(gameInstance);
 
-            foreach (var enemy in _enemyShips)
+            foreach (var enemy in enemyShips)
             {
-                enemy.Move(_direction, SpeedPixelPerSecond, deltaT);
-                if (_random.NextDouble() <= _randomShootProbability * deltaT)
+                enemy.Move(direction, speedPixelPerSecond, deltaT);
+                if (random.NextDouble() <= randomShootProbability * deltaT)
                     enemy.Shoot(gameInstance, Vector2.Down);
             }
 
-            Position.X = (int) _enemyShips.Min(ship => ship.Position.X);
-            Position.Y = (int) _enemyShips.Min(ship => ship.Position.Y);
+            Position.X = (int)enemyShips.Min(ship => ship.Position.X);
+            Position.Y = (int)enemyShips.Min(ship => ship.Position.Y);
             UpdateSize();
         }
 
@@ -167,17 +167,17 @@ namespace SpaceInvaders.Controllers
         private void LoadLevelData(XmlNode level)
         {
             XmlNode stats = level["stats"];
-            _baseWidth = Convert.ToInt32(stats["width"]?.InnerText);
-            Size = new Size(_baseWidth, 0);
-            SpeedPixelPerSecond = Convert.ToDouble(stats["speed"]?.InnerText);
+            baseWidth = Convert.ToInt32(stats["width"]?.InnerText);
+            Size = new Size(baseWidth, 0);
+            speedPixelPerSecond = Convert.ToDouble(stats["speed"]?.InnerText);
 
             XmlNode probabilities = level["probabilities"];
             var provider = new NumberFormatInfo
             {
                 NumberGroupSeparator = "."
             };
-            _randomShootProbability = Convert.ToDouble(probabilities["shoot"]?.InnerText, provider);
-            _randomBonusProbability = Convert.ToDouble(probabilities["bonus"]?.InnerText, provider);
+            randomShootProbability = Convert.ToDouble(probabilities["shoot"]?.InnerText, provider);
+            randomBonusProbability = Convert.ToDouble(probabilities["bonus"]?.InnerText, provider);
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace SpaceInvaders.Controllers
                 var id = Convert.ToInt32(item["id"]?.InnerText);
                 var num = Convert.ToInt32(item["num"]?.InnerText);
                 var lives = Convert.ToInt32(item["lives"]?.InnerText);
-                AddLine(num, lives, _images[id]);
+                AddLine(num, lives, images[id]);
             }
         }
 
@@ -219,12 +219,12 @@ namespace SpaceInvaders.Controllers
         private void AddLine(int nbShips, int nbLives, Bitmap shipImage)
         {
             var y = Size.Height;
-            var split = _baseWidth / nbShips;
+            var split = baseWidth / nbShips;
             for (var i = 0; i < nbShips; i++)
             {
                 var position = new Vector2(split * (i + .5f) - shipImage.Width * .5f, y) + Position;
-                var enemy = new SpaceShip(SpeedPixelPerSecond, position, nbLives, shipImage, Side);
-                _enemyShips.Add(enemy);
+                var enemy = new SpaceShip(speedPixelPerSecond, position, nbLives, shipImage, Side);
+                enemyShips.Add(enemy);
             }
 
             Size += new Size(0, shipImage.Height);
@@ -235,10 +235,10 @@ namespace SpaceInvaders.Controllers
         /// </summary>
         private void UpdateSize()
         {
-            var maxX = (int) _enemyShips.Max(ship => ship.Position.X + ship.Image.Width);
-            var maxY = (int) _enemyShips.Max(ship => ship.Position.Y + ship.Image.Height);
+            var maxX = (int)enemyShips.Max(ship => ship.Position.X + ship.Image.Width);
+            var maxY = (int)enemyShips.Max(ship => ship.Position.Y + ship.Image.Height);
 
-            Size = new Size(maxX - (int) Position.X, maxY - (int) Position.Y);
+            Size = new Size(maxX - (int)Position.X, maxY - (int)Position.Y);
         }
 
         /// <summary>
@@ -247,15 +247,15 @@ namespace SpaceInvaders.Controllers
         /// <param name="gameInstance"></param>
         private void ChangeDirection(Game gameInstance)
         {
-            _direction *= -1;
-            SpeedPixelPerSecond += 10;
-            foreach (var enemy in _enemyShips)
-                enemy.Position += Vector2.Down * 10;
+            direction *= -1;
+            speedPixelPerSecond += 10;
+            foreach (var enemy in enemyShips)
+                enemy.Move(Vector2.Down, 10);
 
-            _randomShootProbability += .01;
+            randomShootProbability += .01;
 
             if (Position.Y >= gameInstance.PlayerShip.Position.Y)
-                gameInstance.PlayerShip.Lives = 0;
+                gameInstance.PlayerShip.Die();
         }
 
         #endregion

@@ -10,7 +10,7 @@ namespace SpaceInvaders.Controllers
         /// <summary>
         /// Direction the missile move along
         /// </summary>
-        private readonly Vector2 _moveDirection;
+        private readonly Vector2 moveDirection;
 
         #endregion
 
@@ -27,7 +27,7 @@ namespace SpaceInvaders.Controllers
         public Missile(double speed, Vector2 position, int lives, Vector2 direction, Side side) : base(speed, position,
             lives, Properties.Resources.shoot1, side)
         {
-            _moveDirection = direction;
+            moveDirection = direction;
         }
 
         #endregion
@@ -41,10 +41,10 @@ namespace SpaceInvaders.Controllers
         /// <param name="deltaT"></param>
         public override void Update(Game gameInstance, double deltaT)
         {
-            Move(_moveDirection, SpeedPixelPerSecond, deltaT);
-            if (Position.Y < 0 || gameInstance.GameSize.Height < Position.Y) Lives = 0;
+            Move(moveDirection, speedPixelPerSecond, deltaT);
+            if (Position.Y < 0 || gameInstance.GameSize.Height < Position.Y) Die();
 
-            foreach (var gameObject in gameInstance.GameObjects.Where(gameObject => gameObject != this))
+            foreach (var gameObject in gameInstance.GameObjects)
                 gameObject.Collision(this);
         }
 
@@ -52,9 +52,13 @@ namespace SpaceInvaders.Controllers
         /// If a missile enter in collision with him auto destroy both of them
         /// </summary>
         /// <param name="m"></param>
-        protected override void OnCollision(SimpleObject m)
+        protected override void OnCollision(SimpleObject simpleObject)
         {
-            m.Lives = Lives = 0;
+            if (simpleObject is Missile)
+            {
+                simpleObject.Die();
+                Die();
+            }
         }
 
         #endregion
